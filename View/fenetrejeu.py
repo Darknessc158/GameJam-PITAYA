@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+import Controleur.player_ctrl
 
 pygame.init()
 screen = pygame.display.set_mode((1024, 768), RESIZABLE)

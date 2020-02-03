@@ -20,8 +20,17 @@ class Player:
     def set_y(self, y):
         self.y = y
 
+    def movePositCourante(self, x, y):
+        self.x += x
+        self.y += y
+        print("La position courante du joueur x : ", self.x, " y : ", self.y)
+        return (self.x, self.y)
+
     def set_health(self, health):
         self.health = health
 
     def set_fuel(self, fuel):
         self.fuel = fuel
+
+    def full_fuel(self): #rechage à 100 le fuel (max)
+        self.fuel = 100
