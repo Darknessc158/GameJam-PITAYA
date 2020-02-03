@@ -1,6 +1,6 @@
 #Importation de la class player fichier model
 from model.player import Player
-from model.weapon import Weapon
+from model.plateforme import Weapon
 
 knife = Weapon("Couteau", 3)
 
