@@ -1,28 +1,21 @@
 class Plateforme:
-    def __init__(self, x, y, isDangerous):
+
+    # Class Attribute
+    species = 'mammal'
+
+    # Initializer / Instance Attributes
+    def __init__(self, x, y, isPoison):
         self.x = x
         self.y = y
-        self.isDangerous=isDangerous
+        self.poison=isPoison
 
-    def get_x(self):
-        return self.x
+    # instance method
+    def description(self):
+        return "Platefome x: {}   y: {}  Poison: {} ".format(self.x, self.y, self.poison)
 
-    def get_y(self):
-        return self.y
 
-    def get_isDangerous(self):
-        return self.isDangeous
+# Instantiate the Dog object
+mikey = Plateforme(8, 6, True)
 
-    def set_x(self, x):
-        self.x=x
-
-    def set_y(self, y):
-        self.y=y
-
-    def set_isDangerous(self, isDangerous):
-        self.isDangeous=isDangerous
-
-    """ 
-    def get_damage_amount(self):
-        return self.damage
-    """
+# call our instance methods
+print(mikey.description())
