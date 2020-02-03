@@ -20,8 +20,15 @@ class Player:
     def set_y(self, y):
         self.y = y
 
+    def setPositCourante(self, x, y):
+        self.set_x(x)
+        self.set_y(y)
+
     def set_health(self, health):
         self.health = health
 
     def set_fuel(self, fuel):
         self.fuel = fuel
+
+    def full_fuel(self): #rechage à 100 le fuel (max)
+        self.fuel = 100
