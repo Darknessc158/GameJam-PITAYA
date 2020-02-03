@@ -1,12 +1,14 @@
 import statistics
+import pygame
+from pygame.locals import *
 # from statistics import mean #importer juste une fonction
 from random import shuffle
 
 def main(): #Definition d'une fonction
-   """
-   # print("Hello") #Fin de fonction avec deux sauts de ligne
-   # print("YO 2eme ligne")
 
+   #print("Hello") #Fin de fonction avec deux sauts de ligne
+   #print("YO 2eme ligne")
+   """
    #creation de variables
    userName = "Momi"
    age = 19
@@ -126,4 +128,6 @@ while months <= 24:
 
 
 if __name__ == '__main__':
-   main()
+   pygame.init()
+   fenetre = pygame.display.set_mode((640, 480))
+
