@@ -1,32 +1,27 @@
 class Player:
-    #constructor
-    def __init__(self, pseudo, health, attack):
-        self.pseudo = pseudo
-        self.health = health
-        self.attack = attack
-        self.weapon = None
-        print("Bienvenue au joueur", pseudo, "/ Points de vie:", health, "/ Attaque:", attack)
+    def __init__(self, health, x, y, fuel):
+        self.x = x  # position x
+        self.y = y  # position y
+        self.health = health  # Vie du joueur 1 ou 0
+        self.fuel = fuel  # quantite de fuel du jetpack du joueur
 
-    def get_pseudo(self):
-        return self.pseudo
+    def get_x(self):
+        return self.x
+
+    def get_y(self):
+        return self.y
 
     def get_health(self):
         return self.health
 
-    def get_attack(self):
-        if self.weapon == None:
-            return self.attack
-        else:
-            return self.attack + self.weapon.get_damage_amount()
+    def set_x(self, x):
+        self.x = x
 
-    def get_weapon(self):
-        return self.weapon
+    def set_y(self, y):
+        self.y = y
 
-    def damage(self, damage):
-        self.health -= damage
+    def set_health(self, health):
+        self.health = health
 
-    def attack_player(self, target_player):
-        target_player.damage(self.get_attack())
-
-    def set_weapon(self, weapon):
-        self.weapon = weapon
+    def set_fuel(self, fuel):
+        self.fuel = fuel
