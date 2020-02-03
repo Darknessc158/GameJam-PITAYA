@@ -23,7 +23,7 @@ click = False
 
 def main_menu():
     while True:
-
+        global click
         screen.fill((0, 0, 0))
         draw_text('Main Menu', font, (255, 255, 255), screen, 20, 20)
 
