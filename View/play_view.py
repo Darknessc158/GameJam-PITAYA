@@ -5,8 +5,8 @@ sys.path.append('../GameJam-PITAYA/Model')
 print(sys.path)
 import pygame
 from pygame.locals import *
-from player import Player
-from plateforme import Plateforme
+from Model.player import Player
+from Model.plateforme import Plateforme
 clock = pygame.time.Clock()
 
 pygame.init()  # initiates pygame

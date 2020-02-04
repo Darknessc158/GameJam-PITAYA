@@ -1,9 +1,9 @@
 import pygame
 from pygame.locals import *
 import sys
-from options import Options
-from game import Game
-from graphic import Figure
+from Model.options import Options
+from Model.game import Game
+from Model.graphic import Figure
 class Menu:
     
 
