@@ -6,6 +6,7 @@ print(sys.path)
 import pygame
 from pygame.locals import *
 from player import Player
+from plateforme import Plateforme
 clock = pygame.time.Clock()
 
 pygame.init()  # initiates pygame
@@ -44,12 +45,14 @@ dirt_img = pygame.image.load(
     '../GameJam-PITAYA/Model/data/dirt.png')
 
 player_img = pygame.image.load(
-    '../GameJam-PITAYA/Model/data/player.png').convert()
+    '../GameJam-PITAYA/Model/data/cosmaunaut.png').convert()
 player_img.set_colorkey((255, 255, 255))
 
 player_rect = pygame.Rect(100, 100,5,13)
 
 joueur = Player(100,0,0,100)
+
+
 while True:  # game loop
     display.fill((146, 244, 255))  # clear screen by filling it with blue
 
@@ -77,7 +80,8 @@ while True:  # game loop
     if vertical_momentum > 3:
         vertical_momentum = 3
 
-    player_rect, collisions = joueur.move(player_rect, player_movement, tile_rects)
+    player_rect, collisions = joueur.move(
+        player_rect, player_movement, tile_rects, game_map)
 
     if collisions['bottom'] == True:
         air_timer = 0
