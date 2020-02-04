@@ -40,12 +40,12 @@ class Plateforme:
                 ['1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1']]
 
     grass_img = pygame.image.load(
-        '/home/soysauceduck/IUT/GameJam/GameJam-PITAYA/Model/data/grass.png')
+        '../GameJam-PITAYA/Model/data/grass.png')
     dirt_img = pygame.image.load(
-        '/home/soysauceduck/IUT/GameJam/GameJam-PITAYA/Model/data/dirt.png')
+        '../GameJam-PITAYA/Model/data/dirt.png')
 
     player_img = pygame.image.load(
-        '/home/soysauceduck/IUT/GameJam/GameJam-PITAYA/Model/data/player.png').convert()
+        '../GameJam-PITAYA/Model/data/player.png').convert()
     player_img.set_colorkey((255, 255, 255))
 
     player_rect = pygame.Rect(100, 100, 5, 13)

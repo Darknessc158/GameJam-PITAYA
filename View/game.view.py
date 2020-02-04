@@ -1,6 +1,6 @@
 import sys
-sys.path.append('/home/soysauceduck/IUT/GameJam/GameJam-PITAYA/Controleur')
-sys.path.append('/home/soysauceduck/IUT/GameJam/GameJam-PITAYA/Model')
+sys.path.append('../GameJam-PITAYA/Controleur')
+sys.path.append('../GameJam-PITAYA/Model')
 
 print(sys.path)
 import pygame
@@ -38,10 +38,13 @@ game_map = [['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0
             ['1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'],
             ['1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1']]
 
-grass_img = pygame.image.load('/home/soysauceduck/IUT/GameJam/GameJam-PITAYA/Model/data/grass.png')
-dirt_img = pygame.image.load('/home/soysauceduck/IUT/GameJam/GameJam-PITAYA/Model/data/dirt.png')
+grass_img = pygame.image.load(
+    '../GameJam-PITAYA/Model/data/grass.png')
+dirt_img = pygame.image.load(
+    '../GameJam-PITAYA/Model/data/dirt.png')
 
-player_img = pygame.image.load('/home/soysauceduck/IUT/GameJam/GameJam-PITAYA/Model/data/player.png').convert()
+player_img = pygame.image.load(
+    '../GameJam-PITAYA/Model/data/player.png').convert()
 player_img.set_colorkey((255, 255, 255))
 
 player_rect = pygame.Rect(100, 100,5,13)
