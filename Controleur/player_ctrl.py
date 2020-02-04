@@ -1,8 +1,9 @@
 import sys
-sys.path.append('/home/soysauceduck/IUT/GameJam/GameJam-PITAYA/View')
-sys.path.append('/home/soysauceduck/IUT/GameJam/GameJam-PITAYA/Model')
+sys.path.append('../GameJam-PITAYA/View')
+sys.path.append('..GameJam/GameJam-PITAYA/Model')
 from Model.player import Player
 import pygame
+from Model.game import Game
 from pygame.locals import *
 # A faire : fuel qui diminue score, altitude qui augmente temps qui augmente obstacles qui bloque ou tue le joueur
 # Objet supplementaire : haricot magique , aile , pitaya ...
@@ -11,6 +12,7 @@ from pygame.locals import *
 player1 = Player(1, int(1024/2)-40, int(768/2)-40, 100)
 player_position = (player1.get_x(), player1.get_y())
 quantitefuel = player1.get_fuel()
+game1 = Game(0, 0) #score et time
 
 
 # Test des evenements
@@ -33,6 +35,7 @@ droite = False
 gauche = False
 haut = False
 bas = False
+fall = True
 timefuel = 0
 launched = True
 while launched:
@@ -42,13 +45,16 @@ while launched:
         elif event.type == pygame.KEYDOWN:
             ## on met a True l’état quand on appuye sur la touche
             if event.key == pygame.K_RIGHT:
-                droite = True
+                if player1.get_x() <= 1024:
+                    droite = True
             elif event.key == pygame.K_LEFT:
                 gauche = True
             elif event.key == pygame.K_UP:
                 haut = True
             elif event.key == pygame.K_DOWN:
                 bas = True
+            elif event.key != pygame.K_DOWN:
+                fall = True
         elif event.type == pygame.KEYUP:
             ## on met a False l’état quand la touche est relâchée
             if event.key == pygame.K_RIGHT:
@@ -59,15 +65,33 @@ while launched:
                 haut = False
             elif event.key == pygame.K_DOWN:
                 bas = False
+    if player1.get_x() >= 940:
+        droite=False
+    elif player1.get_x()  <=10:
+        gauche=False
+    elif player1.get_y() >= 700:
+        launched=False
+    elif player1.get_y() <= 7:
+        haut=False
     ## et on traite les évènements ici
     if droite:
-        player_position = player1.movePositCourante(1, 0)
+        if player1.get_x() >= 0 or player1.get_x() <= 1024:
+            player_position = player1.movePositCourante(1, 0)
+            player_position = player1.movePositCourante(0, 0.1)
     elif gauche:
-        player_position = player1.movePositCourante(-1, 0)
+        if player1.get_x() >= 0 or player1.get_x() <= 1024:
+            player_position = player1.movePositCourante(-1, 0)
+            player_position = player1.movePositCourante(0, 0.1)
     elif haut:
-        player_position = player1.movePositCourante(0, -1)
+        if player1.get_x() >= 0 or player1.get_x() <= 1024:
+            player_position = player1.movePositCourante(0, -1)
     elif bas:
-        player_position = player1.movePositCourante(0, 1)
+        if player1.get_x() >= 0 or player1.get_x() <= 1024:
+            player_position = player1.movePositCourante(0, 1)
+    elif fall:
+        if player1.get_x() >= 0 or player1.get_x() <= 1024:
+            player_position = player1.movePositCourante(0, 0.10)
+
 
 
 
@@ -76,13 +100,20 @@ while launched:
     screen.blit(perso, player_position)
     # Fuel
     timefuel += 1
-    if (timefuel % 50) == 0: #Retourne la duree depuis que pygame.init a été appeler en ms
+    if (timefuel % 150) == 0: #Retourne la duree depuis que pygame.init a été appeler en ms
         quantitefuel -= 1 #diminue de 1 le fuel à chaque boucle modulo 10 du timefuel
         player1.set_fuel(quantitefuel)
     if quantitefuel <= 0:
         launched = False
     rect = pygame.Rect(740, 690, quantitefuel*2, 25)
     pygame.draw.rect(screen, (255, 0, 0), rect)
+    #Score
+    game1.set_time(timefuel)
+    if (game1.get_time() % 50) == 0:
+        game1.add_score(1)
+    text = pygame.font.Font('freesansbold.ttf', 25)
+    score = text.render('Score : {}'.format(game1.get_score()), True, (0, 0, 255))
+    screen.blit(score, (20, 20))
     # Rafraichissement
     pygame.display.flip()
 
