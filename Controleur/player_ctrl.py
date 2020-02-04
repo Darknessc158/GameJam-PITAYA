@@ -1,4 +1,7 @@
-from Model.player import Player
+import sys
+sys.path.append('/home/soysauceduck/IUT/GameJam/GameJam-PITAYA/View')
+sys.path.append('/home/soysauceduck/IUT/GameJam/GameJam-PITAYA/Model')
+from player import Player
 import pygame
 from pygame.locals import *
 # A faire : fuel qui diminue score, altitude qui augmente temps qui augmente obstacles qui bloque ou tue le joueur
@@ -18,7 +21,8 @@ fond.fill((100,100,200))
 # fond = pygame.image.load("../model/data/background.jpg").convert()
 screen.blit(fond, (0, 0))
 # Chargement et collage du personnage
-perso = pygame.image.load("../model/data/perso.png").convert_alpha() #convert alpha pour la transparance du png
+# convert alpha pour la transparance du png
+perso = pygame.image.load("/home/soysauceduck/IUT/GameJam/GameJam-PITAYA/Model/data/perso.png").convert_alpha()
 screen.blit(perso, player_position)
 
 

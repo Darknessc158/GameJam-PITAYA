@@ -12,7 +12,7 @@ pygame.init()  # initiates pygame
 
 pygame.display.set_caption('Pygame Platformer')
 
-WINDOW_SIZE = (600, 400)
+WINDOW_SIZE = (1024, 768)
 
 screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)  # initiate the window
 
@@ -46,6 +46,7 @@ player_img.set_colorkey((255, 255, 255))
 
 player_rect = pygame.Rect(100, 100,5,13)
 
+joueur = Player(100,0,0,100)
 while True:  # game loop
     display.fill((146, 244, 255))  # clear screen by filling it with blue
 
@@ -73,7 +74,7 @@ while True:  # game loop
     if vertical_momentum > 3:
         vertical_momentum = 3
 
-    player_rect, collisions = move(player_rect, player_movement, tile_rects)
+    player_rect, collisions = joueur.move(player_rect, player_movement, tile_rects)
 
     if collisions['bottom'] == True:
         air_timer = 0

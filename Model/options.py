@@ -1,30 +1,16 @@
-import sys
-
 import pygame
 from pygame.locals import *
+import sys
+from graphic import Figure
 
-
-class Game:
-    
-    def __init__(self, score, time):
-        self.score = score
-        self.time = time
-
-    def get_score(self):
-        return self.score
-
-    def get_time(self):
-        return self.time
-
-    def set_score(self, altitude):
-        self.score = altitude
-
-    def set_time(self, time):
-        self.time = time
-
-    def game(self, mainClock):
+class Options:
+    def options(self, screen, font, mainClock):
         running = True
-        while running:            
+        text5 = Figure()
+        while running:
+            screen.fill((0, 0, 0))
+
+            text5.draw_text('options', font, (255, 255, 255), screen, 20, 20)
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
