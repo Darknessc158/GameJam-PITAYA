@@ -112,3 +112,4 @@ class VueJeu:
         screen.blit(pygame.transform.scale(display, WINDOW_SIZE), (0, 0))
         pygame.display.update()
         clock.tick(60)
+

@@ -3,7 +3,6 @@ import sys
 import pygame
 from pygame.locals import *
 
-from plateforme import Plateforme
 
 class Player:
     
