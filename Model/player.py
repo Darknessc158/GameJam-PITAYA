@@ -25,12 +25,9 @@ class Player:
     def get_fuel(self):
         return self.fuel
 
-<<<<<<< HEAD
-=======
     def get_img(self):
         return self.img
 
->>>>>>> 0da3bc2cad2d0f39a2e7da8f836d8d053eac4f70
     def set_x(self, x):
         self.x = x
 
