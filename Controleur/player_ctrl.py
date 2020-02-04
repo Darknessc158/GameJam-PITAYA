@@ -1,6 +1,6 @@
 import sys
-sys.path.append('../GameJam-PITAYA/View')
-sys.path.append('../GameJam-PITAYA/Model')
+sys.path.append('/home/soysauceduck/IUT/GameJam/GameJam-PITAYA/View')
+sys.path.append('/home/soysauceduck/IUT/GameJam/GameJam-PITAYA/Model')
 from player import Player
 import pygame
 from pygame.locals import *
@@ -22,7 +22,7 @@ fond.fill((100,100,200))
 screen.blit(fond, (0, 0))
 # Chargement et collage du personnage
 # convert alpha pour la transparance du png
-perso = pygame.image.load("../GameJam-PITAYA/Model/data/perso.png").convert_alpha()
+perso = pygame.image.load("/home/soysauceduck/IUT/GameJam/GameJam-PITAYA/Model/data/perso.png").convert_alpha()
 screen.blit(perso, player_position)
 
 

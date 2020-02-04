@@ -14,6 +14,9 @@ class Player:
     def get_health(self):
         return self.health
 
+    def get_fuel(self):
+        return self.fuel
+
     def set_x(self, x):
         self.x = x
 
