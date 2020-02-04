@@ -5,15 +5,22 @@ from Model.player import Player
 import pygame
 from Model.game import Game
 from pygame.locals import *
-# A faire : fuel qui diminue score, altitude qui augmente temps qui augmente obstacles qui bloque ou tue le joueur
+from Model.plateformedisplay import Plateformedisplay
+# A faire : obstacles qui bloque ou tue le joueur
 # Objet supplementaire : haricot magique , aile , pitaya ...
 
 # Creation d'un joueur au centre de la map
 player1 = Player(1, int(1024/2)-40, int(768/2)-40, 100)
 player_position = (player1.get_x(), player1.get_y())
 quantitefuel = player1.get_fuel()
+#Creation d'une game
 game1 = Game(0, 0) #score et time
-
+#Creation plateforme
+plateforme1 = Plateformedisplay(300, 50, 200, 10, 'normal') # x y long larg type
+plateforme2 = Plateformedisplay(700, 50, 200, 10, 'normal')
+plateforme3 = Plateformedisplay(450, 200, 200, 10, 'normal')
+plateforme4 = Plateformedisplay(15, 250, 200, 10, 'normal')
+plateformes = [plateforme1]#,plateforme2,plateforme3,plateforme4]
 
 # Test des evenements
 pygame.init()
@@ -114,11 +121,49 @@ while launched:
     text = pygame.font.Font('freesansbold.ttf', 25)
     score = text.render('Score : {}'.format(game1.get_score()), True, (0, 0, 255))
     screen.blit(score, (20, 20))
+
+    # Plateformes
+    for plateforme in plateformes: #collage des plateformes
+        rect = pygame.Rect(plateforme.get_x(), plateforme.get_y(), plateforme.get_long(), plateforme.get_larg())
+        pygame.draw.rect(screen, (0, 255, 0), rect, -1)
+
+    for plateforme in plateformes: #Chute des plateformes pour la prochaine boucle
+        plateforme.set_position(0, 0.10)
+
+    #Gestion collision player-plateformes
+
+    #surface de l'image du player
+    min_x = player1.get_x()
+    max_x = player1.get_x() + 100
+    min_y = player1.get_y()
+    max_y = player1.get_y() + 100
+
+    for plateforme in plateformes:
+        #surface de la plateforme courante
+        min_xplat = plateforme.get_x()
+        max_xplat = plateforme.get_x() + plateforme.get_long()
+        min_yplat = plateforme.get_y()
+        max_yplat = plateforme.get_y() + plateforme.get_larg()
+        #print("plateforme x ", plateforme.get_x())
+        if min_xplat <= min_x \
+                and min_x <= max_xplat \
+                and min_yplat <= min_y \
+                and min_y <= max_yplat:
+            droite = False
+            gauche = False
+            haut = False
+            bas = False
+        if min_xplat <= max_x \
+                and max_x <= max_xplat \
+                and min_yplat <= max_y \
+                and max_y <= max_yplat:
+            droite = False
+            gauche = False
+            haut = False
+            bas = False
     # Rafraichissement
     pygame.display.flip()
 
     # à supprimer juste pour get la position du pointeur
     if event.type == MOUSEBUTTONDOWN and event.button == 1:
         print(pygame.mouse.get_pos())  # getposition
-
-

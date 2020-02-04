@@ -25,8 +25,6 @@ class Player:
     def get_fuel(self):
         return self.fuel
 
-    
-
     def set_x(self, x):
         self.x = x
 
@@ -36,7 +34,6 @@ class Player:
     def movePositCourante(self, x, y):
         self.x += x
         self.y += y
-        print("La position courante du joueur x : ", self.x, " y : ", self.y)
         return (self.x, self.y)
 
     def set_health(self, health):
