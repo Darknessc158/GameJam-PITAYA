@@ -1,9 +1,9 @@
 import pygame
 from pygame.locals import *
 import sys
-from options import Options
-from game import Game
-from graphic import Figure
+from Model.options import Options
+from Model.game import Game
+from Model.graphic import Figure
 class Menu:
     
 
@@ -14,7 +14,7 @@ class Menu:
         text3 = Figure()
         text4 = Figure()
         text5 = Figure()
-        play = Game(0, 0)
+        play = Game(0,0)
         option = Options()
         click = False
         while True:

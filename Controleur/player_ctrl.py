@@ -1,6 +1,7 @@
 import sys
 sys.path.append('../GameJam-PITAYA/View')
-sys.path.append('..GameJam/GameJam-PITAYA/Model')
+sys.path.append('../GameJam-PITAYA/Model')
+
 from Model.player import Player
 import pygame
 from Model.game import Game
@@ -12,6 +13,7 @@ from Model.plateformedisplay import Plateformedisplay
 # Creation d'un joueur au centre de la map
 player1 = Player(1, int(1024/2)-40, int(768/2)-40, 100)
 player_position = (player1.get_x(), player1.get_y())
+player_position2 = (player1.get_x()-50, player1.get_y()-50)
 quantitefuel = player1.get_fuel()
 #Creation d'une game
 game1 = Game(0, 0) #score et time
@@ -34,6 +36,8 @@ screen.blit(fond, (0, 0))
 # convert alpha pour la transparance du png
 perso = pygame.image.load("../Model/data/perso.png").convert_alpha()
 screen.blit(perso, player_position)
+perso2 = pygame.image.load("../Model/data/perso.png").convert_alpha()
+screen.blit(perso2, player_position2)
 
 
 # Boucle affichage de la fenetre
@@ -102,9 +106,11 @@ while launched:
 
 
 
+
     # Re-collage
     screen.blit(fond, (0, 0))
     screen.blit(perso, player_position)
+    screen.blit(perso2, player_position2)
     # Fuel
     timefuel += 1
     if (timefuel % 150) == 0: #Retourne la duree depuis que pygame.init a été appeler en ms
