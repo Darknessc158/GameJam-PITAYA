@@ -12,7 +12,7 @@ class Player:
         self.y = y  # position y
         self.health = health  # Vie du joueur 1 ou 0
         self.fuel = fuel  # quantite de fuel du jetpack du joueur
-        self.img = '../GameJam-PITAYA/Model/data/cosmaunaut.png'
+        self.img = '../GameJam-PITAYA/Model/data/player.png'
 
     def get_x(self):
         return self.x
@@ -26,7 +26,8 @@ class Player:
     def get_fuel(self):
         return self.fuel
 
-    
+    def get_img(self):
+        return self.img
 
     def set_x(self, x):
         self.x = x

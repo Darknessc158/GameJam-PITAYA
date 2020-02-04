@@ -1,6 +1,6 @@
 import sys
-sys.path.append('/home/soysauceduck/IUT/GameJam/GameJam-PITAYA/View')
-sys.path.append('/home/soysauceduck/IUT/GameJam/GameJam-PITAYA/Model')
+sys.path.append('../GameJam-PITAYA/View')
+sys.path.append('../GameJam-PITAYA/Model')
 from Model.player import Player
 import pygame
 from pygame.locals import *

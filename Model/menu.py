@@ -14,7 +14,7 @@ class Menu:
         text3 = Figure()
         text4 = Figure()
         text5 = Figure()
-        play = Game(0, 0)
+        play = Game(0,0)
         option = Options()
         click = False
         while True:

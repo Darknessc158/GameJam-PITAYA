@@ -1,5 +1,5 @@
 import sys
-
+sys.path.append('../GameJam-PITAYA/View')
 import pygame
 from pygame.locals import *
 
