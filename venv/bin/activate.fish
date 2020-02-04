@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/ngB/PycharmProjects/GameJam-PITAYA/venv"
+set -gx VIRTUAL_ENV "/home/ngB/PycharmProjects/Pitaya/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
