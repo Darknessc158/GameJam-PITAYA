@@ -1,5 +1,4 @@
 import sys
-
 import pygame
 from pygame.locals import *
 import random
@@ -57,6 +56,56 @@ class Player:
 
     def full_fuel(self): #rechage à 100 le fuel (max)
         self.fuel = 100
+
+    def deplacement(self, direction):
+
+        if event.type == KEYDOWN:
+            g = 0
+            if k[K_UP]:
+                hero.position.y += hero.v_y
+                hero.v_y += hero.v_gravitation
+
+                if hero.v_y > 5:
+                    hero.v_y = hero.v_saut
+
+            if k[K_RIGHT]:
+                hero.position.x += 5
+                hero.image = hero.image_right
+
+                if k[K_RIGHT] and k[K_UP]:
+                    hero.position.x += hero.v_x
+                    hero.position.y += hero.v_y
+                    hero.v_y += hero.v_gravitation
+                    hero.image = hero.image_right
+
+                    if hero.v_y > 5:
+                        hero.v_y = hero.v_saut
+
+            if k[K_LEFT]:
+                hero.position.x -= 5
+                hero.image = hero.image_left
+
+                if k[K_LEFT] and k[K_UP]:
+                    hero.position.x -= hero.v_x
+                    hero.position.y += hero.v_y
+                    hero.v_y += hero.v_gravitation
+                    hero.image = hero.image_left
+
+                    if hero.v_y > 5:
+                        hero.v_y = hero.v_saut
+
+            if k[K_DOWN]:
+                hero.position.y += 5
+                hero.image = hero.image_left
+
+            if k[K_c]:
+                hero.position.y -= 5
+                hero.image = hero.image_right
+
+        elif event.type == KEYUP:
+
+            if k[K_UP]:
+                hero.v_y = hero.v_saut
 
 
     def move(self, rect, movement, tiles, map):

@@ -7,6 +7,7 @@ from pygame.locals import *
 from Model.objet import Objet
 from Model.objet import Carburant
 import random
+import time
 
 
 class Game:
@@ -99,34 +100,34 @@ class Game:
         counter = 0
         x_default = [300, 450, 350, 500, 650, 400, 700, 200, 50, 600, 100]
         powerups = []
-        while counter < 500:
+        while counter < 150:
             if counter < 10:
                 xrand = random.choice(x_default)
-                yrand = random.randrange(-4500, 700, 400)
-            elif counter >= 50 and counter < 100:
+                yrand = random.randrange(-4500, 700, 100)
+            elif counter >= 10 and counter < 20:
                 xrand = random.choice(x_default)
-                yrand = random.randrange(-8500, -4500, 450)
-            elif counter >= 150 and counter < 200:
+                yrand = random.randrange(-8500, -4500, 100)
+            elif counter >= 20 and counter < 30:
                 xrand = random.choice(x_default)
-                yrand = random.randrange(-16500, -8500, 550)
-            elif counter >= 200 and counter < 250:
+                yrand = random.randrange(-16500, -8500, 100)
+            elif counter >= 40 and counter < 50:
                 xrand = random.choice(x_default)
-                yrand = random.randrange(-24500, -16500, 650)
-            elif counter >= 250 and counter < 300:
+                yrand = random.randrange(-24500, -16500, 100)
+            elif counter >= 50 and counter < 60:
                 xrand = random.choice(x_default)
-                yrand = random.randrange(-32500, -24500, 750)
-            elif counter >= 300 and counter < 350:
+                yrand = random.randrange(-32500, -24500, 100)
+            elif counter >= 60 and counter < 80:
                 xrand = random.choice(x_default)
-                yrand = random.randrange(-40500, -32500, 850)
-            elif counter >= 350 and counter < 400:
+                yrand = random.randrange(-40500, -32500, 100)
+            elif counter >= 80 and counter < 100:
                 xrand = random.choice(x_default)
-                yrand = random.randrange(-48500, -40500, 950)
-            elif counter >= 400 and counter < 450:
+                yrand = random.randrange(-48500, -40500, 100)
+            elif counter >= 120 and counter < 140:
                 xrand = random.choice(x_default)
-                yrand = random.randrange(-56500, -48500, 1050)
-            elif counter >= 450 and counter <= 500:
+                yrand = random.randrange(-56500, -48500, 100)
+            elif counter >= 140 and counter <= 150:
                 xrand = random.choice(x_default)
-                yrand = random.randrange(-64500, -56500, 1150)
+                yrand = random.randrange(-64500, -56500, 100)
 
             if counter % 2 == 0:
                 objet = Objet("bouteille",xrand, yrand)
@@ -139,4 +140,5 @@ class Game:
 
 
 if __name__ == '__main__':
-    print(int(-random.random()*1000))
+    t = int((time.time() % 60))
+    print((int((time.time() % 60)) - t))
