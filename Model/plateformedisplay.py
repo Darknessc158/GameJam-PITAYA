@@ -33,3 +33,4 @@ class Plateformedisplay:
 
     def set_y(self, y):
         self.y = y
+
