@@ -53,8 +53,7 @@ screen.blit(fond, (0, 0))
 perso = pygame.image.load("/home/darknessc158/IUT/GameJam/GameJam-PITAYA/Model/data/perso.png").convert_alpha()
 screen.blit(perso, player_position)
 
-perso2 = pygame.image.load("/home/darknessc158/IUT/GameJam/GameJam-PITAYA/Model/data/perso.png").convert_alpha()
-screen.blit(perso2, player_position2)
+
 
 
 
