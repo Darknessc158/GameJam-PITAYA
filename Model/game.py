@@ -86,8 +86,10 @@ class Game:
 
             if counter % 69 == 0:
                 plateforme = Plateformedisplay(xrand, yrand, randlong, 10, 'poison')
-            elif counter % 17 == 0:
+            elif counter % 44 == 0:
                 plateforme =  Plateformedisplay(xrand, yrand, randlong, 10, 'teleportation')
+            elif counter % 10 == 0:
+                plateforme = Plateformedisplay(xrand, yrand, randlong, 10, 'CarburantMoins')
             else:
                 plateforme= Plateformedisplay(xrand, yrand, randlong, 10, 'normal')
             plateformes.append(plateforme)

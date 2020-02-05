@@ -55,6 +55,11 @@ class Player:
         if self.fuel > 100:
             self.fuel = 100
 
+    def remove_fuel(self):
+        self.fuel = 25
+        if self.fuel < 0:
+            self.fuel = 0
+
     def full_fuel(self): #rechage à 100 le fuel (max)
         self.fuel = 100
 

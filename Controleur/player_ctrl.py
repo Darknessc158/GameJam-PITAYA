@@ -57,7 +57,10 @@ gauche = False
 haut = False
 bas = False
 fall = True
-fallspeed = 2
+boost = False
+fuelHit = False
+niveauFall = 0
+fallspeed = 1
 timefuel = 0
 defilmap = -9000
 launched = True
@@ -81,7 +84,7 @@ while launched:
                 if estSurPlateforme == False:
                     fall = True
             elif event.key == pygame.K_UP:
-                perso = pygame.image.load("../Model/data/Cosmonaut-jump-100.png")
+                perso = pygame.image.load("../Model/data/cosmonaut-jump-100.png")
                 screen.blit(perso, player_position)
                 haut = True
                 fall = True
@@ -110,7 +113,7 @@ while launched:
     #Gestion deplacement bord de l'ecran
     if player1.get_x() >= 940:
         droite=False
-    elif player1.get_x() <=10:
+    elif player1.get_x() <=5:
         gauche=False
     elif player1.get_y() >= 700:
         launched=False
@@ -146,6 +149,9 @@ while launched:
                     launched = False
                 elif plateforme.get_type() == 'teleportation':
                     player_position = player1.movePositTeleportation()
+                elif plateforme.get_type() == 'CarburantMoins':
+                    player1.remove_fuel()
+                    fuelHit = True
                 bas = False
                 player_position = player1.movePositCourante(0, fallspeed) #descends à la vitesse des plateformes
                 fall = False
@@ -153,7 +159,7 @@ while launched:
                 player1.add_fuel(0.2)
                 quantitefuel = int(player1.get_fuel())
                 #Mets l'image de marche
-                perso = pygame.image.load("../Model/data/Cosmonaut-march-100.png")
+                perso = pygame.image.load("../Model/data/cosmonaut-march-100.png")
         if min_y <= min_yplat and max_y >= max_yplat:  # Est sur la largeur de la plateforme
                 estSurPlateforme = True
         else:
@@ -189,13 +195,28 @@ while launched:
     elif haut:
         if player1.get_x() >= 0 or player1.get_x() <= 1024:
             player_position = player1.movePositCourante(0, -1.5)
-    elif bas:
-        if player1.get_x() >= 0 or player1.get_x() <= 1024:
-            player_position = player1.movePositCourante(0, 2)
     elif fall:
         if player1.get_x() >= 0 or player1.get_x() <= 1024:
-            player_position = player1.movePositCourante(0, 1.5)
-
+            if niveauFall == 0 :
+                player_position = player1.movePositCourante(0, 1.5)
+            elif niveauFall == 1:
+                player_position = player1.movePositCourante(0, 1.75)
+            elif  niveauFall == 2:
+                 player_position = player1.movePositCourante(0, 2)
+            elif niveauFall == 3:
+                player_position = player1.movePositCourante(0, 2.25)
+            elif niveauFall == 4:
+                player_position = player1.movePositCourante(0, 2.50)
+            elif niveauFall == 5:
+                player_position = player1.movePositCourante(0, 2.75)
+            elif niveauFall == 6:
+                player_position = player1.movePositCourante(0, 3)
+            elif niveauFall == 7:
+                player_position = player1.movePositCourante(0, 3.25)
+            elif niveauFall == 8:
+                player_position = player1.movePositCourante(0, 3.50)
+            elif niveauFall > 8:
+                player_position = player1.movePositCourante(0, 5)
 
 
     # Re-collage
@@ -212,23 +233,30 @@ while launched:
         player1.set_fuel(quantitefuel)
     if quantitefuel <= 0:
         launched = False
-    rect = pygame.Rect(740, 690, quantitefuel*2, 25)
+    rect = pygame.Rect(740, 677, quantitefuel*2, 25)
     pygame.draw.rect(screen, (255, 0, 0), rect)
     text = pygame.font.Font('freesansbold.ttf', 20)
     fuel = text.render('Carburant : {}'.format(int(player1.get_fuel())), True, (0, 0, 0))
-    screen.blit(fuel, (750, 693))
+    screen.blit(fuel, (750, 680))
+
+    #Fuel reduit alert
+    if fuelHit == True:
+        text = pygame.font.Font('freesansbold.ttf', 55)
+        carb = text.render('-75', True, (255, 0, 0))
+        screen.blit(carb, (900, 625))
+        fuelHit = False
 
     # Message alerte fuel
     if player1.get_fuel() <= 30:
-        text = pygame.font.Font('freesansbold.ttf', 15)
+        text = pygame.font.Font('freesansbold.ttf', 25)
         carb = text.render('Alerte ! Alerte ! Niveau carburant bas', True, (255, 0, 0))
-        screen.blit(carb, (400, 200))
+        screen.blit(carb, (325, 200))
 
     #Score
     game1.set_time(timefuel)
     if (game1.get_time() % 50) == 0:
         game1.add_score(1)
-    text = pygame.font.Font('freesansbold.ttf', 25)
+    text = pygame.font.Font('freesansbold.ttf', 50)
     score = text.render('Score : {}'.format(game1.get_score()), True, (0, 0, 0))
     screen.blit(score, (20, 20))
 
@@ -239,6 +267,8 @@ while launched:
             pygame.draw.rect(screen, (0, 255, 0), rect)
         elif(plateforme.get_type() == 'teleportation'):
             pygame.draw.rect(screen, (0, 191, 255), rect)
+        elif(plateforme.get_type() == 'CarburantMoins'):
+            pygame.draw.rect(screen, (255,255,0), rect)
         else:
             pygame.draw.rect(screen, (105, 105, 105), rect)
 
@@ -274,16 +304,24 @@ while launched:
                     quantitefuel = player1.get_fuel()
 
                 if (objet.get_name() == "bouteille"):
-                    fallspeed = 4
+                    fallspeed = fallspeed + 4
                     powerup = True
                     game1.add_score(40)
-                powerups.remove(objet)
-            # print("L'astronaut est sur la ligne de l'objet")
+                    powerups.remove(objet)
+                    haut = True
+                    fall = False
 
-
-    if (timefuel % 800) == 0:  # On remet la vitesse normal apres le power up
-        fallspeed = 0.5
+    if (timefuel % 500) == 0 and powerup == True:  # On remet la vitesse normal apres le power up
+        fallspeed = fallspeed - 4
         powerup = False
+        fall = True
+
+    if (timefuel % 500) == 0:  # Difficulte augmente
+        fallspeed = fallspeed + 0.25
+        niveauFall += 1
+        print(niveauFall)
+        powerup = False
+
 
     # Rafraichissement
     pygame.display.flip()
