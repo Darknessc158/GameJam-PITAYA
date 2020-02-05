@@ -4,17 +4,17 @@ sys.path.append('../GameJam-PITAYA/View')
 sys.path.append('../GameJam-PITAYA/Model')
 
 
-from player import Player
+from Model.player import Player
 
 import pygame
-from game import Game
-from objet import Ennemi
+from Model.game import Game
+from Model.objet import Ennemi
 from pygame.locals import *
 
 
-from plateformedisplay import Plateformedisplay
-from objet import Objet
-from objet import Carburant
+from Model.plateformedisplay import Plateformedisplay
+from Model.objet import Objet
+from Model.objet import Carburant
 
 import time
 
@@ -48,16 +48,20 @@ pygame.init()
 screen = pygame.display.set_mode((1024, 768), RESIZABLE)
 # fond et collage du fond à la fenetre
 fond = pygame.Surface(screen.get_size())
-fond.fill((100,100,200))
-# fond = pygame.image.load("../model/data/background.jpg").convert()
-screen.blit(fond, (0, 0))
+#fond.fill((100,100,200))
+fond = pygame.image.load("../Model/data/map_background.png").convert()
+screen.blit(fond, (0, -9000))
 # Chargement et collage du personnage
 # convert alpha pour la transparance du png
-perso = pygame.image.load("/home/darknessc158/IUT/GameJam/GameJam-PITAYA/Model/data/perso.png").convert_alpha()
-screen.blit(perso, player_position)
+sprite = pygame.image.load("../Model/data/Cosmonaut.png")
 
+sprite_rect = sprite.get_rect()
+sprite_rect.centerx = (25/2)
+sprite_rect.centery = (25/2)
 
+screen.blit(sprite, sprite_rect)
 
+pygame.display.flip()
 
 
 # Boucle affichage de la fenetre
@@ -69,6 +73,7 @@ bas = False
 fall = True
 fallspeed = 0.5
 timefuel = 0
+defilmap = -9000
 launched = True
 
 while launched:
@@ -144,6 +149,9 @@ while launched:
                 bas = False
                 player_position = player1.movePositCourante(0, fallspeed)
                 fall = False
+                # Recharge le fuel si le player est posé sur une plateforme
+                player1.add_fuel(0.2)
+                quantitefuel = int(player1.get_fuel())
         if min_y <= min_yplat and max_y >= max_yplat:  # Est sur la largeur de la plateforme
             if (max_xplat - 5) <= min_x <= (max_xplat + 5):  # collision par la droite (petite marge pour eviter les bug de traversement)
                 gauche = False
@@ -185,8 +193,9 @@ while launched:
 
 
     # Re-collage
-    screen.blit(fond, (0, 0))
-    screen.blit(perso, player_position)
+    defilmap += 1 #defilement de la map
+    screen.blit(fond, (0, defilmap))
+    screen.blit(sprite, player_position)
     #screen.blit(perso2, player_position2)
 
     # Fuel
@@ -199,7 +208,7 @@ while launched:
     rect = pygame.Rect(740, 690, quantitefuel*2, 25)
     pygame.draw.rect(screen, (255, 0, 0), rect)
     text = pygame.font.Font('freesansbold.ttf', 20)
-    fuel = text.render('Carburant : {}'.format(player1.get_fuel()), True, (0, 0, 0))
+    fuel = text.render('Carburant : {}'.format(int(player1.get_fuel())), True, (0, 0, 0))
     screen.blit(fuel, (750, 693))
 
     # Message alerte fuel
