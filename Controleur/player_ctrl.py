@@ -10,17 +10,13 @@ import pygame
 from game import Game
 from objet import Ennemi
 from pygame.locals import *
-<<<<<<< HEAD
+
 
 from plateformedisplay import Plateformedisplay
 from objet import Objet
 from objet import Carburant
-=======
-from Model.plateformedisplay import Plateformedisplay
-from Model.objet import Objet
-from Model.objet import Carburant
+
 import time
->>>>>>> ba4a0fe9ad17439c8f927c32b84c4211058c0569
 
 # A faire :
 # Objet supplementaire : haricot magique , aile , pitaya ...
