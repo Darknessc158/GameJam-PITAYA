@@ -84,7 +84,10 @@ class Game:
                 yrand = random.randrange(-64500, -56500, 950)
                 randlong = random.choice(long)
 
-            plateforme= Plateformedisplay(xrand, yrand, randlong, 10, 'normal')
+            if counter % 3 == 0:
+                plateforme = Plateformedisplay(xrand, yrand, randlong, 10, 'poison')
+            else:
+                plateforme= Plateformedisplay(xrand, yrand, randlong, 10, 'normal')
             plateformes.append(plateforme)
             counter += 1
 

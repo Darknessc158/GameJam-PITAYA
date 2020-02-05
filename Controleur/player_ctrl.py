@@ -68,6 +68,8 @@ fallspeed = 0.5
 timefuel = 0
 defilmap = -9000
 launched = True
+powerup = False
+estSurPlateforme = False
 
 while launched:
     for event in pygame.event.get():
@@ -77,10 +79,12 @@ while launched:
             ## on met a True l’état quand on appuie sur la touche
             if event.key == pygame.K_RIGHT:
                 droite = True
-                fall = True
+                if estSurPlateforme == False:
+                    fall = True
             elif event.key == pygame.K_LEFT:
                 gauche = True
-                fall = True
+                if estSurPlateforme == False:
+                    fall = True
             elif event.key == pygame.K_UP:
                 haut = True
                 fall = True
@@ -133,19 +137,24 @@ while launched:
         min_yplat = int(plateforme.get_y())
         max_yplat = int(plateforme.get_y() + plateforme.get_larg())
 
-        if min_xplat <= max_x and min_x <= max_xplat:  # Est sur la longueur de la plateforme
+        if min_xplat <= max_x and min_x <= max_xplat and powerup == False:  # Est sur la longueur de la plateforme
             if (max_yplat - 5) <= min_y <= (max_yplat + 5):  # collisation par le bas
                 haut = False
                 # player_position = player1.movePositCourante(0, fallspeed)
                 # fall = False
             if (min_yplat - 5) <= max_y <= (min_yplat + 5):  # colisation par en haut
+                if plateforme.get_type() == 'poison':
+                    lauched = False
                 bas = False
                 player_position = player1.movePositCourante(0, fallspeed)
                 fall = False
                 # Recharge le fuel si le player est posé sur une plateforme
                 player1.add_fuel(0.2)
                 quantitefuel = int(player1.get_fuel())
-        if min_y <= min_yplat and max_y >= max_yplat:  # Est sur la largeur de la plateforme
+                estSurPlateforme = True
+        else:
+            estSurPlateforme = False
+        if min_y <= min_yplat and max_y >= max_yplat and powerup == False:  # Est sur la largeur de la plateforme
             if (max_xplat - 5) <= min_x <= (max_xplat + 5):  # collision par la droite (petite marge pour eviter les bug de traversement)
                 gauche = False
             if (min_xplat - 5) <= max_x <= (min_xplat + 5):  # collision par la gauche
@@ -221,7 +230,10 @@ while launched:
     # Plateformes
     for plateforme in plateformes: #collage des plateformes
         rect = pygame.Rect(int(plateforme.get_x()), int(plateforme.get_y()), int(plateforme.get_long()), int(plateforme.get_larg()))
-        pygame.draw.rect(screen, (0, 255, 0), rect)
+        if(plateforme.get_type() == 'poison'):
+            pygame.draw.rect(screen, (0, 255, 0), rect)
+        else:
+            pygame.draw.rect(screen, (105, 105, 105), rect)
 
     for plateforme in plateformes: #Chute des plateformes pour la prochaine boucle
         plateforme.set_position(0, fallspeed)
@@ -256,6 +268,7 @@ while launched:
 
                 if (objet.get_name() == "bouteille"):
                     fallspeed = 4
+                    powerup = True
                     game1.add_score(40)
                 powerups.remove(objet)
             # print("L'astronaut est sur la ligne de l'objet")
@@ -263,6 +276,7 @@ while launched:
 
     if (timefuel % 800) == 0:  # On remet la vitesse normal apres le power up
         fallspeed = 0.5
+        powerup = False
 
     # Rafraichissement
     pygame.display.flip()
