@@ -5,6 +5,7 @@ sys.path.append('../GameJam-PITAYA/Model')
 from Model.player import Player
 import pygame
 from Model.game import Game
+from Model.objet import Ennemi
 from pygame.locals import *
 from Model.plateformedisplay import Plateformedisplay
 from Model.objet import Objet
@@ -60,6 +61,7 @@ bas = False
 fall = True
 timefuel = 0
 launched = True
+collision=False
 while launched:
 
     for event in pygame.event.get():
@@ -128,6 +130,7 @@ while launched:
                 gauche = False
             if (min_xplat - 5) <= max_x <= (min_xplat + 5):  # collision par la gauche
                 droite = False
+<<<<<<< HEAD
 
     if droite:
         if player1.get_x() >= 0 or player1.get_x() <= 1024:
@@ -140,12 +143,35 @@ while launched:
     elif haut:
         if player1.get_x() >= 0 or player1.get_x() <= 1024:
             player_position = player1.movePositCourante(0, -5)
+=======
+        if pygame.Rect(player1.get_x(), player1.get_y(), 100, 100).colliderect(plateforme.get_x(),plateforme.get_y(),plateforme.get_larg(),plateforme.get_long()):
+            collision=True
+        else:
+            collision=False
+    ## et on traite les évènements ici
+    if droite:
+        if player1.get_x() >= 0 or player1.get_x() <= 1024:
+            player_position = player1.movePositCourante(1, 0)
+            player_position = player1.movePositCourante(0, 1.5)
+    elif gauche:
+        if player1.get_x() >= 0 or player1.get_x() <= 1024:
+            player_position = player1.movePositCourante(-1, 0)
+            player_position = player1.movePositCourante(0, 1.5)
+    elif haut:
+       if collision == False:
+            if player1.get_x() >= 0 or player1.get_x() <= 1024:
+                player_position = player1.movePositCourante(0, -1.5)
+>>>>>>> e6fac5152e914a6b6133630d5802a24edd863fa3
     elif bas:
         if player1.get_x() >= 0 or player1.get_x() <= 1024:
-            player_position = player1.movePositCourante(0, 1)
+            player_position = player1.movePositCourante(0, 2)
     elif fall:
         if player1.get_x() >= 0 or player1.get_x() <= 1024:
+<<<<<<< HEAD
             player_position = player1.movePositCourante(0, 0.5)
+=======
+            player_position = player1.movePositCourante(0, 1.5)
+>>>>>>> e6fac5152e914a6b6133630d5802a24edd863fa3
 
 
     # Re-collage
