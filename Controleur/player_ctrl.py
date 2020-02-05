@@ -10,10 +10,17 @@ import pygame
 from game import Game
 from objet import Ennemi
 from pygame.locals import *
+<<<<<<< HEAD
 
 from plateformedisplay import Plateformedisplay
 from objet import Objet
 from objet import Carburant
+=======
+from Model.plateformedisplay import Plateformedisplay
+from Model.objet import Objet
+from Model.objet import Carburant
+import time
+>>>>>>> ba4a0fe9ad17439c8f927c32b84c4211058c0569
 
 # A faire :
 # Objet supplementaire : haricot magique , aile , pitaya ...
@@ -38,8 +45,8 @@ plateforme8 = Plateformedisplay(15, -200, 200, 10, 'normal')
 plateformes = [plateforme1, plateforme2, plateforme3, plateforme4, plateforme5, plateforme6, plateforme7, plateforme8]
 
 #Creation objet
-carburant1 = Carburant("carburant", 300, 50, 50)
-powerups = [carburant1]
+powerups = game1.generate_objet()
+
 # Test des evenements
 pygame.init()
 screen = pygame.display.set_mode((1024, 768), RESIZABLE)
@@ -64,6 +71,7 @@ gauche = False
 haut = False
 bas = False
 fall = True
+fallspeed = 0.5
 timefuel = 0
 launched = True
 
@@ -75,8 +83,10 @@ while launched:
             ## on met a True l’état quand on appuie sur la touche
             if event.key == pygame.K_RIGHT:
                 droite = True
+                fall = True
             elif event.key == pygame.K_LEFT:
                 gauche = True
+                fall = True
             elif event.key == pygame.K_UP:
                 haut = True
                 fall = True
@@ -89,12 +99,16 @@ while launched:
             ## on met a False l’état quand la touche est relâchée
             if event.key == pygame.K_RIGHT:
                 droite = False
+                fall = True
             elif event.key == pygame.K_LEFT:
                 gauche = False
+                fall = True
             elif event.key == pygame.K_UP:
                 haut = False
+                fall = True
             elif event.key == pygame.K_DOWN:
                 bas = False
+                fall = True
 
 
 
@@ -128,9 +142,11 @@ while launched:
         if min_xplat <= max_x and min_x <= max_xplat:  # Est sur la longueur de la plateforme
             if (max_yplat - 5) <= min_y <= (max_yplat + 5):  # collisation par le bas
                 haut = False
+                # player_position = player1.movePositCourante(0, fallspeed)
+                # fall = False
             if (min_yplat - 5) <= max_y <= (min_yplat + 5):  # colisation par en haut
                 bas = False
-                player_position = player1.movePositCourante(0, 0.2)
+                player_position = player1.movePositCourante(0, fallspeed)
                 fall = False
         if min_y <= min_yplat and max_y >= max_yplat:  # Est sur la largeur de la plateforme
             if (max_xplat - 5) <= min_x <= (max_xplat + 5):  # collision par la droite (petite marge pour eviter les bug de traversement)
@@ -179,7 +195,7 @@ while launched:
 
     # Fuel
     timefuel += 1
-    if (timefuel % 150) == 0: #Retourne la duree depuis que pygame.init a été appeler en ms
+    if (timefuel % 20) == 0: #Retourne la duree depuis que pygame.init a été appeler en ms
         quantitefuel -= 1 #diminue de 1 le fuel à chaque boucle modulo 10 du timefuel
         player1.set_fuel(quantitefuel)
     if quantitefuel <= 0:
@@ -189,6 +205,12 @@ while launched:
     text = pygame.font.Font('freesansbold.ttf', 20)
     fuel = text.render('Carburant : {}'.format(player1.get_fuel()), True, (0, 0, 0))
     screen.blit(fuel, (750, 693))
+
+    # Message alerte fuel
+    if player1.get_fuel() <= 30:
+        text = pygame.font.Font('freesansbold.ttf', 15)
+        carb = text.render('Alerte ! Alerte ! Niveau carburant bas', True, (255, 0, 0))
+        screen.blit(carb, (400, 200))
 
     #Score
     game1.set_time(timefuel)
@@ -204,12 +226,18 @@ while launched:
         pygame.draw.rect(screen, (0, 255, 0), rect)
 
     for plateforme in plateformes: #Chute des plateformes pour la prochaine boucle
-        plateforme.set_position(0, 0.2)
+        plateforme.set_position(0, fallspeed)
 
     #Power up
+    for objet in powerups: # Chute des objets
+        objet.set_position(0, fallspeed)
     for objet in powerups:
-        pygame.draw.circle(screen, (255, 0, 0), (objet.get_x(), objet.get_y()), 20)
-        # Verif sur power up
+        if (objet.get_name() == "carburant"):
+            pygame.draw.circle(screen, (255, 0, 0), (objet.get_x(), objet.get_y()), 20)
+        elif (objet.get_name() == "bouteille"):
+            pygame.draw.circle(screen, (128, 128, 128), (objet.get_x(), objet.get_y()), 20)
+
+        # Verif si le player est sur le power up
         #surface de l'objet
         min_yobj = int(objet.get_y() - 20) # 20 == rayon du cercle
         max_yobj = int(objet.get_y() + 20)
@@ -223,19 +251,20 @@ while launched:
         max_y = int(player1.get_y() + 100)
         if min_yobj <= max_y and max_yobj >= min_y: #sur la largeur de l'objet
             if min_xobj <= max_x and max_xobj >= min_x: #Sur la longueur de l'objet
-                print("L'astronaute est sur l'objet")
+                # print("L'astronaute est sur l'objet")
                 if (objet.get_name() == "carburant"):
-                    print("Fuel rechargé")
                     player1.add_fuel(objet.get_quantite())
                     quantitefuel = player1.get_fuel()
+
+                if (objet.get_name() == "bouteille"):
+                    fallspeed = 4
+                    game1.add_score(40)
+                powerups.remove(objet)
             # print("L'astronaut est sur la ligne de l'objet")
 
-    for objet in powerups: # Chute des objets
-        objet.set_position(0, 0.2)
 
-
-
-
+    if (timefuel % 800) == 0:  # On remet la vitesse normal apres le power up
+        fallspeed = 0.5
 
     # Rafraichissement
     pygame.display.flip()
