@@ -28,17 +28,10 @@ quantitefuel = player1.get_fuel()
 
 #Creation d'une game
 game1 = Game(0, 0) #score et time
-
+plateformes = game1.generatePlateformes().copy()
 #Creation plateforme
-plateforme1 = Plateformedisplay(300, 50, 200, 10, 'normal') # x y long larg type
-plateforme2 = Plateformedisplay(700, 50, 200, 10, 'normal')
-plateforme3 = Plateformedisplay(450, 200, 200, 10, 'normal')
-plateforme4 = Plateformedisplay(15, 250, 200, 10, 'normal')
-plateforme5 = Plateformedisplay(300, -100, 200, 10, 'normal') # x y long larg type
-plateforme6 = Plateformedisplay(700, -300, 200, 10, 'normal')
-plateforme7 = Plateformedisplay(450, -500, 200, 10, 'normal')
-plateforme8 = Plateformedisplay(15, -200, 200, 10, 'normal')
-plateformes = [plateforme1, plateforme2, plateforme3, plateforme4, plateforme5, plateforme6, plateforme7, plateforme8]
+
+
 
 #Creation objet
 powerups = game1.generate_objet()
