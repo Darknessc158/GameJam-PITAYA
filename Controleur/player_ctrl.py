@@ -4,6 +4,7 @@ sys.path.append('../GameJam-PITAYA/View')
 sys.path.append('../GameJam-PITAYA/Model')
 
 import pygame
+from Model.player import  Player
 from Model.game import Game
 from Model.objet import Ennemi
 from pygame.locals import *
@@ -74,6 +75,7 @@ while launched:
                 gauche = True
             if pygame.K_UP in listekeypressed:
                 perso = pygame.image.load("../Model/data/cosmonaut-jump-100.png")
+                haut = True
                 if estSurPlateforme == False:
                     fall = True
             elif event.key == pygame.K_UP:
@@ -148,7 +150,7 @@ while launched:
                 player1.add_fuel(0.2)
                 quantitefuel = int(player1.get_fuel())
                 # Mets l'image de pose
-                perso = pygame.image.load("../Model/data/Cosmonaut-march-100.png")
+                perso = pygame.image.load("../Model/data/cosmonaut-march-100.png")
                 #Action des plateformes
                 if plateforme.get_type() == 'poison':
                     launched = False
@@ -167,55 +169,6 @@ while launched:
     # Re-collage du fond et du player
     defilmap += 1  # defilement de la map
     screen.blit(fond, (0, defilmap))  # recollage map
-
-    #Gestion des bords
-    if droite:
-        if player1.get_x() >= 0 or player1.get_x() <= 1024:
-            player_position = player1.movePositCourante(2, 0)
-            player_position = player1.movePositCourante(0, 0.5)
-    elif gauche:
-        if player1.get_x() >= 0 or player1.get_x() <= 1024:
-            player_position = player1.movePositCourante(-2, 0)
-            player_position = player1.movePositCourante(0, 0.5)
-    elif haut:
-        if player1.get_x() >= 0 or player1.get_x() <= 1024:
-            player_position = player1.movePositCourante(0, -5)
-
-    ## et on traite les évènements ici
-    if droite:
-        if player1.get_x() >= 0 or player1.get_x() <= 1024:
-            player_position = player1.movePositCourante(1, 0)
-            # player_position = player1.movePositCourante(0, 1.5)
-    elif gauche:
-        if player1.get_x() >= 0 or player1.get_x() <= 1024:
-            player_position = player1.movePositCourante(-1, 0)
-            # player_position = player1.movePositCourante(0, 1.5)
-    elif haut:
-        if player1.get_x() >= 0 or player1.get_x() <= 1024:
-            player_position = player1.movePositCourante(0, -1.5)
-    elif fall:
-        if player1.get_x() >= 0 or player1.get_x() <= 1024:
-            if niveauFall == 0 :
-                player_position = player1.movePositCourante(0, 1.5)
-            elif niveauFall == 1:
-                player_position = player1.movePositCourante(0, 1.75)
-            elif  niveauFall == 2:
-                 player_position = player1.movePositCourante(0, 2)
-            elif niveauFall == 3:
-                player_position = player1.movePositCourante(0, 2.25)
-            elif niveauFall == 4:
-                player_position = player1.movePositCourante(0, 2.50)
-            elif niveauFall == 5:
-                player_position = player1.movePositCourante(0, 2.75)
-            elif niveauFall == 6:
-                player_position = player1.movePositCourante(0, 3)
-            elif niveauFall == 7:
-                player_position = player1.movePositCourante(0, 3.25)
-            elif niveauFall == 8:
-                player_position = player1.movePositCourante(0, 3.50)
-            elif niveauFall > 8:
-                player_position = player1.movePositCourante(0, 5)
-
 
     # Re-collage
     defilmap += 1 #defilement de la map
@@ -277,6 +230,10 @@ while launched:
         plateforme.set_position(0, fallspeed)
     screen.blit(perso, player_position)
 
+    #Augmentation de difficulte
+    if timefuel % 500 == 0:
+        niveauFall += 1
+        fallspeed += 0.25
     #Power up
     for objet in powerups:
         if (objet.get_name() == "carburant"):
@@ -304,26 +261,49 @@ while launched:
                 powerups.remove(objet)
     #Desactivation de l'effet du powerup
     if nbboucle <= (boucle-150) and powerup == True:  # On remet la vitesse normal apres 200 boucles
-        fallspeed = 2
+        fallspeed = fallspeed - 4
         powerup = False
 
 
     ## Traitement des deplacements
     # Droite / Gauche
     if droite:
-            player_position = player1.movePositCourante(6, 0)
+            player_position = player1.movePositCourante(3.5, 0)
             player_position = player1.movePositCourante(0, 1.5)# chute
     elif gauche:
-            player_position = player1.movePositCourante(-6, 0)
+            player_position = player1.movePositCourante(-3.5, 0)
             player_position = player1.movePositCourante(0, 1.5)# chute
     # Haut / Bas
     if haut:
-            player_position = player1.movePositCourante(0, -10)
+        player_position = player1.movePositCourante(0, -0.25)
+        player_position = player1.movePositCourante(0, -0.50)
+        player_position = player1.movePositCourante(0, -1)
+        player_position = player1.movePositCourante(0, -1.75)
     elif bas:
             player_position = player1.movePositCourante(0, 5)
     # Chute
     if fall:
-        player_position = player1.movePositCourante(0, 3.5)
+        if player1.get_x() >= 0 or player1.get_x() <= 1024:
+            if niveauFall == 0:
+                player_position = player1.movePositCourante(0, 1.5)
+            elif niveauFall == 1:
+                player_position = player1.movePositCourante(0, 1.75)
+            elif niveauFall == 2:
+                player_position = player1.movePositCourante(0, 2)
+            elif niveauFall == 3:
+                player_position = player1.movePositCourante(0, 2.25)
+            elif niveauFall == 4:
+                player_position = player1.movePositCourante(0, 2.50)
+            elif niveauFall == 5:
+                player_position = player1.movePositCourante(0, 2.75)
+            elif niveauFall == 6:
+                player_position = player1.movePositCourante(0, 3)
+            elif niveauFall == 7:
+                player_position = player1.movePositCourante(0, 3.25)
+            elif niveauFall == 8:
+                player_position = player1.movePositCourante(0, 3.50)
+            elif niveauFall > 8:
+                player_position = player1.movePositCourante(0, 5)
 
 
     # recollage du pers
