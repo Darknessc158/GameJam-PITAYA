@@ -63,7 +63,6 @@ timefuel = 0
 launched = True
 
 while launched:
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             launched = False
@@ -75,8 +74,10 @@ while launched:
                 gauche = True
             elif event.key == pygame.K_UP:
                 haut = True
+                fall = True
             elif event.key == pygame.K_DOWN:
                 bas = True
+                fall = True
             elif event.key != pygame.K_DOWN:
                 fall = True
         elif event.type == pygame.KEYUP:
@@ -124,12 +125,15 @@ while launched:
                 haut = False
             if (min_yplat - 5) <= max_y <= (min_yplat + 5):  # colisation par en haut
                 bas = False
+                player_position = player1.movePositCourante(0, 0.2)
+                fall = False
         if min_y <= min_yplat and max_y >= max_yplat:  # Est sur la largeur de la plateforme
             if (max_xplat - 5) <= min_x <= (max_xplat + 5):  # collision par la droite (petite marge pour eviter les bug de traversement)
                 gauche = False
             if (min_xplat - 5) <= max_x <= (min_xplat + 5):  # collision par la gauche
                 droite = False
 
+    #Gestion des bords
     if droite:
         if player1.get_x() >= 0 or player1.get_x() <= 1024:
             player_position = player1.movePositCourante(2, 0)
@@ -159,7 +163,6 @@ while launched:
             player_position = player1.movePositCourante(0, 2)
     elif fall:
         if player1.get_x() >= 0 or player1.get_x() <= 1024:
-            player_position = player1.movePositCourante(0, 0.5)
             player_position = player1.movePositCourante(0, 1.5)
 
 
@@ -196,7 +199,7 @@ while launched:
         pygame.draw.rect(screen, (0, 255, 0), rect)
 
     for plateforme in plateformes: #Chute des plateformes pour la prochaine boucle
-        plateforme.set_position(0, 0.5)
+        plateforme.set_position(0, 0.2)
 
     #Power up
     for objet in powerups:
@@ -223,7 +226,7 @@ while launched:
             # print("L'astronaut est sur la ligne de l'objet")
 
     for objet in powerups: # Chute des objets
-        objet.set_position(0, 0.5)
+        objet.set_position(0, 0.2)
 
 
 
