@@ -2,7 +2,7 @@ import sys
 
 import pygame
 from pygame.locals import *
-
+import random
 
 class Player:
     
@@ -37,6 +37,11 @@ class Player:
     def movePositCourante(self, x, y):
         self.x += x
         self.y += y
+        return (self.x, self.y)
+
+    def movePositTeleportation(self):
+        self.x = random.randrange(0, 1024, 25)
+        self.y -= 175
         return (self.x, self.y)
 
     def set_health(self, health):

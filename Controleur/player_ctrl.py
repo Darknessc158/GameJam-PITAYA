@@ -53,7 +53,7 @@ sprite_rect.centerx = (25/2)
 sprite_rect.centery = (25/2)
 
 screen.blit(sprite, sprite_rect)
-perso = pygame.image.load("../Model/data/Cosmonaut-idle-100.png")
+perso = pygame.image.load("../Model/data/cosmonaut-idle-100.png")
 screen.blit(perso, player_position)
 
 pygame.display.flip()
@@ -142,12 +142,16 @@ while launched:
 
         if min_xplat <= max_x and min_x <= max_xplat and powerup == False:  # Est sur la longueur de la plateforme
             if (max_yplat - 5) <= min_y <= (max_yplat + 5):  # collisation par le bas
+                if plateforme.get_type() == 'teleportation':
+                    player_position = player1.movePositTeleportation()
                 haut = False
                 # player_position = player1.movePositCourante(0, fallspeed)
                 # fall = False
             if (min_yplat - 5) <= max_y <= (min_yplat + 5):  # colisation par en haut
                 if plateforme.get_type() == 'poison':
-                    lauched = False
+                    launched = False
+                elif plateforme.get_type() == 'teleportation':
+                    player_position = player1.movePositTeleportation()
                 bas = False
                 player_position = player1.movePositCourante(0, fallspeed)
                 fall = False
@@ -239,6 +243,8 @@ while launched:
         rect = pygame.Rect(int(plateforme.get_x()), int(plateforme.get_y()), int(plateforme.get_long()), int(plateforme.get_larg()))
         if(plateforme.get_type() == 'poison'):
             pygame.draw.rect(screen, (0, 255, 0), rect)
+        elif(plateforme.get_type() == 'teleportation'):
+            pygame.draw.rect(screen, (0, 191, 255), rect)
         else:
             pygame.draw.rect(screen, (105, 105, 105), rect)
 
