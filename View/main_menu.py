@@ -4,7 +4,7 @@ import pygame
 from pygame.locals import *
 sys.path.append('../GameJam-PITAYA/Controleur')
 sys.path.append('../GameJam-PITAYA/Model')
-from menu import Menu
+from Model.menu import Menu
 
 # Setup pygame/window ---------------------------------------- #
 class VueMenu:

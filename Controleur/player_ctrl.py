@@ -28,13 +28,10 @@ quantitefuel = player1.get_fuel()
 
 #Creation d'une game
 game1 = Game(0, 0) #score et time
-plateformes = game1.generatePlateformes().copy()
 #Creation plateforme
-
-
-
+plateformes = game1.generatePlateformes().copy()
 #Creation objet
-powerups = game1.generate_objet()
+powerups = game1.generate_objet().copy()
 
 # Test des evenements
 pygame.init()
@@ -46,13 +43,7 @@ fond = pygame.image.load("../Model/data/map_background.png").convert()
 screen.blit(fond, (0, -9000))
 # Chargement et collage du personnage
 # convert alpha pour la transparance du png
-sprite = pygame.image.load("../Model/data/Cosmonaut.png")
 
-sprite_rect = sprite.get_rect()
-sprite_rect.centerx = (25/2)
-sprite_rect.centery = (25/2)
-
-screen.blit(sprite, sprite_rect)
 perso = pygame.image.load("../Model/data/Cosmonaut-idle-100.png")
 screen.blit(perso, player_position)
 
@@ -66,7 +57,7 @@ gauche = False
 haut = False
 bas = False
 fall = True
-fallspeed = 0.5
+fallspeed = 2
 timefuel = 0
 defilmap = -9000
 launched = True
@@ -79,12 +70,14 @@ while launched:
             ## on met a True l’état quand on appuie sur la touche
             if event.key == pygame.K_RIGHT:
                 droite = True
-                fall = True
+                if min_xplat <= max_x and min_x <= max_xplat and (max_yplat - 5) <= min_y <= (max_yplat + 5):
+                    fall = False
             elif event.key == pygame.K_LEFT:
                 gauche = True
                 fall = True
             elif event.key == pygame.K_UP:
-                perso = pygame.image.load("../Model/data/Cosmonaut_jump.png")
+                perso = pygame.image.load("../Model/data/Cosmonaut-jump-100.png")
+                screen.blit(perso, player_position)
                 haut = True
                 fall = True
             elif event.key == pygame.K_DOWN:
@@ -112,7 +105,7 @@ while launched:
     #Gestion deplacement bord de l'ecran
     if player1.get_x() >= 940:
         droite=False
-    elif player1.get_x()  <=10:
+    elif player1.get_x() <=10:
         gauche=False
     elif player1.get_y() >= 700:
         launched=False
@@ -141,15 +134,15 @@ while launched:
                 haut = False
                 # player_position = player1.movePositCourante(0, fallspeed)
                 # fall = False
-            if (min_yplat - 5) <= max_y <= (min_yplat + 5):  # colisation par en haut
+            if (min_yplat - 10) <= max_y <= (min_yplat + 10):  # colisation par en haut
                 bas = False
-                player_position = player1.movePositCourante(0, fallspeed)
+                player_position = player1.movePositCourante(0, fallspeed) #descends à la vitesse des plateformes
                 fall = False
                 # Recharge le fuel si le player est posé sur une plateforme
                 player1.add_fuel(0.2)
                 quantitefuel = int(player1.get_fuel())
                 #Mets l'image de marche
-                perso = pygame.image.load("../Model/data/Cosmonaut_march.png")
+                perso = pygame.image.load("../Model/data/Cosmonaut-march-100.png")
         if min_y <= min_yplat and max_y >= max_yplat:  # Est sur la largeur de la plateforme
             if (max_xplat - 5) <= min_x <= (max_xplat + 5):  # collision par la droite (petite marge pour eviter les bug de traversement)
                 gauche = False
@@ -193,9 +186,9 @@ while launched:
     # Re-collage
     defilmap += 1 #defilement de la map
     screen.blit(fond, (0, defilmap))
-    screen.blit(sprite, player_position)
+    if defilmap == 0:
+        screen.fill((0, 0, 0))
     screen.blit(perso, player_position)
-    #screen.blit(perso2, player_position2)
 
     # Fuel
     timefuel += 1
@@ -231,7 +224,7 @@ while launched:
 
     for plateforme in plateformes: #Chute des plateformes pour la prochaine boucle
         plateforme.set_position(0, fallspeed)
-
+    screen.blit(perso, player_position)
     #Power up
     for objet in powerups: # Chute des objets
         objet.set_position(0, fallspeed)

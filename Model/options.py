@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 import sys
-from graphic import Figure
+from Model.graphic import Figure
 
 class Options:
     def options(self, screen, font, mainClock):

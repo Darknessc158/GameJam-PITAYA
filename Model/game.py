@@ -91,25 +91,44 @@ class Game:
         return plateformes
 
     def generate_objet(self):
-        i = 0
-        x = 0
-        y = 0
+        counter = 0
+        x_default = [300, 450, 350, 500, 650, 400, 700, 200, 50, 600, 100]
         powerups = []
-        while i < 5: # 1ere 5 carburants
-            i += 1
-            x = int(random.random()*1000)
-            y = int(-random.random()*1000)
-            carb = Carburant("carburant", x, y, 50)
-            powerups.insert(i, carb)
+        while counter < 500:
+            if counter < 10:
+                xrand = random.choice(x_default)
+                yrand = random.randrange(-4500, 700, 400)
+            elif counter >= 50 and counter < 100:
+                xrand = random.choice(x_default)
+                yrand = random.randrange(-8500, -4500, 450)
+            elif counter >= 150 and counter < 200:
+                xrand = random.choice(x_default)
+                yrand = random.randrange(-16500, -8500, 550)
+            elif counter >= 200 and counter < 250:
+                xrand = random.choice(x_default)
+                yrand = random.randrange(-24500, -16500, 650)
+            elif counter >= 250 and counter < 300:
+                xrand = random.choice(x_default)
+                yrand = random.randrange(-32500, -24500, 750)
+            elif counter >= 300 and counter < 350:
+                xrand = random.choice(x_default)
+                yrand = random.randrange(-40500, -32500, 850)
+            elif counter >= 350 and counter < 400:
+                xrand = random.choice(x_default)
+                yrand = random.randrange(-48500, -40500, 950)
+            elif counter >= 400 and counter < 450:
+                xrand = random.choice(x_default)
+                yrand = random.randrange(-56500, -48500, 1050)
+            elif counter >= 450 and counter <= 500:
+                xrand = random.choice(x_default)
+                yrand = random.randrange(-64500, -56500, 1150)
 
-        i = 0
-        while i < 3: # 2 gazbottle
-            i += 1
-            x = int(random.random() * 1000)
-            y = int(-random.random() * 1000)
-            objet = Objet("bouteille", x, y)
-            powerups.insert(i, objet)
-
+            if counter % 2 == 0:
+                objet = Objet("bouteille",xrand, yrand)
+            else:
+                objet = Carburant("carburant", xrand, yrand, 50)
+            powerups.append(objet)
+            counter += 1
 
         return powerups
 
