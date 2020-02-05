@@ -70,8 +70,7 @@ while launched:
         elif event.type == pygame.KEYDOWN:
             ## on met a True l’état quand on appuie sur la touche
             if event.key == pygame.K_RIGHT:
-                if player1.get_x() <= 1024:
-                    droite = True
+                droite = True
             elif event.key == pygame.K_LEFT:
                 gauche = True
             elif event.key == pygame.K_UP:
@@ -147,11 +146,11 @@ while launched:
     if droite:
         if player1.get_x() >= 0 or player1.get_x() <= 1024:
             player_position = player1.movePositCourante(1, 0)
-            player_position = player1.movePositCourante(0, 1.5)
+            # player_position = player1.movePositCourante(0, 1.5)
     elif gauche:
         if player1.get_x() >= 0 or player1.get_x() <= 1024:
             player_position = player1.movePositCourante(-1, 0)
-            player_position = player1.movePositCourante(0, 1.5)
+            # player_position = player1.movePositCourante(0, 1.5)
     elif haut:
         if player1.get_x() >= 0 or player1.get_x() <= 1024:
             player_position = player1.movePositCourante(0, -1.5)
@@ -216,7 +215,11 @@ while launched:
         max_y = int(player1.get_y() + 100)
         if min_yobj <= max_y and max_yobj >= min_y: #sur la largeur de l'objet
             if min_xobj <= max_x and max_xobj >= min_x: #Sur la longueur de l'objet
-                # print("L'astronaute est sur l'objet")
+                print("L'astronaute est sur l'objet")
+                if (objet.get_name() == "carburant"):
+                    print("Fuel rechargé")
+                    player1.add_fuel(objet.get_quantite())
+                    quantitefuel = player1.get_fuel()
             # print("L'astronaut est sur la ligne de l'objet")
 
     for objet in powerups: # Chute des objets
