@@ -44,16 +44,7 @@ screen.blit(fond, (0, -9000))
 # Chargement et collage du personnage
 # convert alpha pour la transparance du png
 
-<<<<<<< HEAD
-perso = pygame.image.load("../Model/data/Cosmonaut-idle-100.png")
-=======
-sprite_rect = sprite.get_rect()
-sprite_rect.centerx = (25/2)
-sprite_rect.centery = (25/2)
-
-screen.blit(sprite, sprite_rect)
 perso = pygame.image.load("../Model/data/cosmonaut-idle-100.png")
->>>>>>> 51a33158f6a0c6b6a5f65c23e092966fa192a94f
 screen.blit(perso, player_position)
 
 pygame.display.flip()
@@ -81,13 +72,10 @@ while launched:
             ## on met a True l’état quand on appuie sur la touche
             if event.key == pygame.K_RIGHT:
                 droite = True
-<<<<<<< HEAD
                 if min_xplat <= max_x and min_x <= max_xplat and (max_yplat - 5) <= min_y <= (max_yplat + 5):
                     fall = False
-=======
                 if estSurPlateforme == False:
                     fall = True
->>>>>>> 51a33158f6a0c6b6a5f65c23e092966fa192a94f
             elif event.key == pygame.K_LEFT:
                 gauche = True
                 if estSurPlateforme == False:
@@ -153,15 +141,11 @@ while launched:
                 haut = False
                 # player_position = player1.movePositCourante(0, fallspeed)
                 # fall = False
-<<<<<<< HEAD
-            if (min_yplat - 10) <= max_y <= (min_yplat + 10):  # colisation par en haut
-=======
             if (min_yplat - 5) <= max_y <= (min_yplat + 5):  # colisation par en haut
                 if plateforme.get_type() == 'poison':
                     launched = False
                 elif plateforme.get_type() == 'teleportation':
                     player_position = player1.movePositTeleportation()
->>>>>>> 51a33158f6a0c6b6a5f65c23e092966fa192a94f
                 bas = False
                 player_position = player1.movePositCourante(0, fallspeed) #descends à la vitesse des plateformes
                 fall = False
