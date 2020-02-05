@@ -4,6 +4,9 @@ import pygame
 import random
 from Model.plateformedisplay import Plateformedisplay
 from pygame.locals import *
+from Model.objet import Objet
+from Model.objet import Carburant
+import random
 
 
 class Game:
@@ -15,11 +18,11 @@ class Game:
     def get_score(self):
         return self.score
 
+    def add_score(self, score):
+        self.score += score
+
     def get_time(self):
         return self.time
-
-    def add_score(self, altitude):
-        self.score += altitude
 
     def set_time(self, time):
         self.time = time
@@ -86,3 +89,30 @@ class Game:
             counter += 1
 
         return plateformes
+
+    def generate_objet(self):
+        i = 0
+        x = 0
+        y = 0
+        powerups = []
+        while i < 5: # 1ere 5 carburants
+            i += 1
+            x = int(random.random()*1000)
+            y = int(-random.random()*1000)
+            carb = Carburant("carburant", x, y, 50)
+            powerups.insert(i, carb)
+
+        i = 0
+        while i < 3: # 2 gazbottle
+            i += 1
+            x = int(random.random() * 1000)
+            y = int(-random.random() * 1000)
+            objet = Objet("bouteille", x, y)
+            powerups.insert(i, objet)
+
+
+        return powerups
+
+
+if __name__ == '__main__':
+    print(int(-random.random()*1000))
