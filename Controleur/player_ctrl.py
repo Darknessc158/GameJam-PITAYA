@@ -44,7 +44,16 @@ screen.blit(fond, (0, -9000))
 # Chargement et collage du personnage
 # convert alpha pour la transparance du png
 
+<<<<<<< HEAD
 perso = pygame.image.load("../Model/data/Cosmonaut-idle-100.png")
+=======
+sprite_rect = sprite.get_rect()
+sprite_rect.centerx = (25/2)
+sprite_rect.centery = (25/2)
+
+screen.blit(sprite, sprite_rect)
+perso = pygame.image.load("../Model/data/cosmonaut-idle-100.png")
+>>>>>>> 51a33158f6a0c6b6a5f65c23e092966fa192a94f
 screen.blit(perso, player_position)
 
 pygame.display.flip()
@@ -61,6 +70,8 @@ fallspeed = 2
 timefuel = 0
 defilmap = -9000
 launched = True
+powerup = False
+estSurPlateforme = False
 
 while launched:
     for event in pygame.event.get():
@@ -70,11 +81,17 @@ while launched:
             ## on met a True l’état quand on appuie sur la touche
             if event.key == pygame.K_RIGHT:
                 droite = True
+<<<<<<< HEAD
                 if min_xplat <= max_x and min_x <= max_xplat and (max_yplat - 5) <= min_y <= (max_yplat + 5):
                     fall = False
+=======
+                if estSurPlateforme == False:
+                    fall = True
+>>>>>>> 51a33158f6a0c6b6a5f65c23e092966fa192a94f
             elif event.key == pygame.K_LEFT:
                 gauche = True
-                fall = True
+                if estSurPlateforme == False:
+                    fall = True
             elif event.key == pygame.K_UP:
                 perso = pygame.image.load("../Model/data/Cosmonaut-jump-100.png")
                 screen.blit(perso, player_position)
@@ -129,12 +146,22 @@ while launched:
         min_yplat = int(plateforme.get_y())
         max_yplat = int(plateforme.get_y() + plateforme.get_larg())
 
-        if min_xplat <= max_x and min_x <= max_xplat:  # Est sur la longueur de la plateforme
+        if min_xplat <= max_x and min_x <= max_xplat and powerup == False:  # Est sur la longueur de la plateforme
             if (max_yplat - 5) <= min_y <= (max_yplat + 5):  # collisation par le bas
+                if plateforme.get_type() == 'teleportation':
+                    player_position = player1.movePositTeleportation()
                 haut = False
                 # player_position = player1.movePositCourante(0, fallspeed)
                 # fall = False
+<<<<<<< HEAD
             if (min_yplat - 10) <= max_y <= (min_yplat + 10):  # colisation par en haut
+=======
+            if (min_yplat - 5) <= max_y <= (min_yplat + 5):  # colisation par en haut
+                if plateforme.get_type() == 'poison':
+                    launched = False
+                elif plateforme.get_type() == 'teleportation':
+                    player_position = player1.movePositTeleportation()
+>>>>>>> 51a33158f6a0c6b6a5f65c23e092966fa192a94f
                 bas = False
                 player_position = player1.movePositCourante(0, fallspeed) #descends à la vitesse des plateformes
                 fall = False
@@ -144,6 +171,10 @@ while launched:
                 #Mets l'image de marche
                 perso = pygame.image.load("../Model/data/Cosmonaut-march-100.png")
         if min_y <= min_yplat and max_y >= max_yplat:  # Est sur la largeur de la plateforme
+                estSurPlateforme = True
+        else:
+            estSurPlateforme = False
+        if min_y <= min_yplat and max_y >= max_yplat and powerup == False:  # Est sur la largeur de la plateforme
             if (max_xplat - 5) <= min_x <= (max_xplat + 5):  # collision par la droite (petite marge pour eviter les bug de traversement)
                 gauche = False
             if (min_xplat - 5) <= max_x <= (min_xplat + 5):  # collision par la gauche
@@ -220,7 +251,12 @@ while launched:
     # Plateformes
     for plateforme in plateformes: #collage des plateformes
         rect = pygame.Rect(int(plateforme.get_x()), int(plateforme.get_y()), int(plateforme.get_long()), int(plateforme.get_larg()))
-        pygame.draw.rect(screen, (0, 255, 0), rect)
+        if(plateforme.get_type() == 'poison'):
+            pygame.draw.rect(screen, (0, 255, 0), rect)
+        elif(plateforme.get_type() == 'teleportation'):
+            pygame.draw.rect(screen, (0, 191, 255), rect)
+        else:
+            pygame.draw.rect(screen, (105, 105, 105), rect)
 
     for plateforme in plateformes: #Chute des plateformes pour la prochaine boucle
         plateforme.set_position(0, fallspeed)
@@ -255,6 +291,7 @@ while launched:
 
                 if (objet.get_name() == "bouteille"):
                     fallspeed = 4
+                    powerup = True
                     game1.add_score(40)
                 powerups.remove(objet)
             # print("L'astronaut est sur la ligne de l'objet")
@@ -262,6 +299,7 @@ while launched:
 
     if (timefuel % 800) == 0:  # On remet la vitesse normal apres le power up
         fallspeed = 0.5
+        powerup = False
 
     # Rafraichissement
     pygame.display.flip()
