@@ -1,23 +1,31 @@
+#Import
 import sys
 sys.path.append('../GameJam-PITAYA/View')
 sys.path.append('../GameJam-PITAYA/Model')
 
+
 from player import Player
+
 import pygame
 from game import Game
 from objet import Ennemi
 from pygame.locals import *
+
 from plateformedisplay import Plateformedisplay
-# A faire : obstacles qui bloque ou tue le joueur
+from objet import Objet
+from objet import Carburant
+
+# A faire :
 # Objet supplementaire : haricot magique , aile , pitaya ...
 
 # Creation d'un joueur au centre de la map
 player1 = Player(1, int(1024/2)-40, int(768/2)-40, 100)
 player_position = (player1.get_x(), player1.get_y())
-player_position2 = (player1.get_x()-50, player1.get_y()-50)
 quantitefuel = player1.get_fuel()
+
 #Creation d'une game
 game1 = Game(0, 0) #score et time
+
 #Creation plateforme
 plateforme1 = Plateformedisplay(300, 50, 200, 10, 'normal') # x y long larg type
 plateforme2 = Plateformedisplay(700, 50, 200, 10, 'normal')
@@ -29,6 +37,9 @@ plateforme7 = Plateformedisplay(450, -500, 200, 10, 'normal')
 plateforme8 = Plateformedisplay(15, -200, 200, 10, 'normal')
 plateformes = [plateforme1, plateforme2, plateforme3, plateforme4, plateforme5, plateforme6, plateforme7, plateforme8]
 
+#Creation objet
+carburant1 = Carburant("carburant", 300, 50, 50)
+powerups = [carburant1]
 # Test des evenements
 pygame.init()
 screen = pygame.display.set_mode((1024, 768), RESIZABLE)
@@ -41,8 +52,10 @@ screen.blit(fond, (0, 0))
 # convert alpha pour la transparance du png
 perso = pygame.image.load("/home/darknessc158/IUT/GameJam/GameJam-PITAYA/Model/data/perso.png").convert_alpha()
 screen.blit(perso, player_position)
+
 perso2 = pygame.image.load("/home/darknessc158/IUT/GameJam/GameJam-PITAYA/Model/data/perso.png").convert_alpha()
 screen.blit(perso2, player_position2)
+
 
 
 # Boucle affichage de la fenetre
@@ -54,7 +67,7 @@ bas = False
 fall = True
 timefuel = 0
 launched = True
-collision=False
+
 while launched:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -62,14 +75,15 @@ while launched:
         elif event.type == pygame.KEYDOWN:
             ## on met a True l’état quand on appuie sur la touche
             if event.key == pygame.K_RIGHT:
-                if player1.get_x() <= 1024:
-                    droite = True
+                droite = True
             elif event.key == pygame.K_LEFT:
                 gauche = True
             elif event.key == pygame.K_UP:
                 haut = True
+                fall = True
             elif event.key == pygame.K_DOWN:
                 bas = True
+                fall = True
             elif event.key != pygame.K_DOWN:
                 fall = True
         elif event.type == pygame.KEYUP:
@@ -83,6 +97,8 @@ while launched:
             elif event.key == pygame.K_DOWN:
                 bas = False
 
+
+
     #Gestion deplacement bord de l'ecran
     if player1.get_x() >= 940:
         droite=False
@@ -93,6 +109,8 @@ while launched:
     elif player1.get_y() <= 7:
         haut=False
 
+
+    ## et on traite les évènements ici
     # Gestion collision player-plateformes
 
     # surface de l'image du player
@@ -109,38 +127,50 @@ while launched:
         max_yplat = int(plateforme.get_y() + plateforme.get_larg())
 
         if min_xplat <= max_x and min_x <= max_xplat:  # Est sur la longueur de la plateforme
-            if max_y == min_yplat:  # colisation par en haut
-                bas = False
-            if min_y == max_yplat:  # collisation par le bas
+            if (max_yplat - 5) <= min_y <= (max_yplat + 5):  # collisation par le bas
                 haut = False
+            if (min_yplat - 5) <= max_y <= (min_yplat + 5):  # colisation par en haut
+                bas = False
+                player_position = player1.movePositCourante(0, 0.2)
+                fall = False
         if min_y <= min_yplat and max_y >= max_yplat:  # Est sur la largeur de la plateforme
             if (max_xplat - 5) <= min_x <= (max_xplat + 5):  # collision par la droite (petite marge pour eviter les bug de traversement)
                 gauche = False
             if (min_xplat - 5) <= max_x <= (min_xplat + 5):  # collision par la gauche
                 droite = False
-        if pygame.Rect(player1.get_x(), player1.get_y(), 100, 100).colliderect(plateforme.get_x(),plateforme.get_y(),plateforme.get_larg(),plateforme.get_long()):
-            collision=True
-        else:
-            collision=False
+
+    #Gestion des bords
+    if droite:
+        if player1.get_x() >= 0 or player1.get_x() <= 1024:
+            player_position = player1.movePositCourante(2, 0)
+            player_position = player1.movePositCourante(0, 0.5)
+    elif gauche:
+        if player1.get_x() >= 0 or player1.get_x() <= 1024:
+            player_position = player1.movePositCourante(-2, 0)
+            player_position = player1.movePositCourante(0, 0.5)
+    elif haut:
+        if player1.get_x() >= 0 or player1.get_x() <= 1024:
+            player_position = player1.movePositCourante(0, -5)
+
     ## et on traite les évènements ici
     if droite:
         if player1.get_x() >= 0 or player1.get_x() <= 1024:
             player_position = player1.movePositCourante(1, 0)
-            player_position = player1.movePositCourante(0, 1.5)
+            # player_position = player1.movePositCourante(0, 1.5)
     elif gauche:
         if player1.get_x() >= 0 or player1.get_x() <= 1024:
             player_position = player1.movePositCourante(-1, 0)
-            player_position = player1.movePositCourante(0, 1.5)
+            # player_position = player1.movePositCourante(0, 1.5)
     elif haut:
-       if collision == False:
-            if player1.get_x() >= 0 or player1.get_x() <= 1024:
-                player_position = player1.movePositCourante(0, -1.5)
+        if player1.get_x() >= 0 or player1.get_x() <= 1024:
+            player_position = player1.movePositCourante(0, -1.5)
     elif bas:
         if player1.get_x() >= 0 or player1.get_x() <= 1024:
             player_position = player1.movePositCourante(0, 2)
     elif fall:
         if player1.get_x() >= 0 or player1.get_x() <= 1024:
             player_position = player1.movePositCourante(0, 1.5)
+
 
 
     # Re-collage
@@ -160,6 +190,7 @@ while launched:
     text = pygame.font.Font('freesansbold.ttf', 20)
     fuel = text.render('Carburant : {}'.format(player1.get_fuel()), True, (0, 0, 0))
     screen.blit(fuel, (750, 693))
+
     #Score
     game1.set_time(timefuel)
     if (game1.get_time() % 50) == 0:
@@ -174,7 +205,38 @@ while launched:
         pygame.draw.rect(screen, (0, 255, 0), rect)
 
     for plateforme in plateformes: #Chute des plateformes pour la prochaine boucle
-        plateforme.set_position(0, 0.8)
+        plateforme.set_position(0, 0.2)
+
+    #Power up
+    for objet in powerups:
+        pygame.draw.circle(screen, (255, 0, 0), (objet.get_x(), objet.get_y()), 20)
+        # Verif sur power up
+        #surface de l'objet
+        min_yobj = int(objet.get_y() - 20) # 20 == rayon du cercle
+        max_yobj = int(objet.get_y() + 20)
+        min_xobj = int(objet.get_x() - 20)
+        max_xobj = int(objet.get_x() + 20)
+
+        # recalcul surface de l'image du player
+        min_x = int(player1.get_x())
+        max_x = int(player1.get_x() + 100)
+        min_y = int(player1.get_y())
+        max_y = int(player1.get_y() + 100)
+        if min_yobj <= max_y and max_yobj >= min_y: #sur la largeur de l'objet
+            if min_xobj <= max_x and max_xobj >= min_x: #Sur la longueur de l'objet
+                print("L'astronaute est sur l'objet")
+                if (objet.get_name() == "carburant"):
+                    print("Fuel rechargé")
+                    player1.add_fuel(objet.get_quantite())
+                    quantitefuel = player1.get_fuel()
+            # print("L'astronaut est sur la ligne de l'objet")
+
+    for objet in powerups: # Chute des objets
+        objet.set_position(0, 0.2)
+
+
+
+
 
     # Rafraichissement
     pygame.display.flip()

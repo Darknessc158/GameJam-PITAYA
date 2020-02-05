@@ -9,10 +9,10 @@ class Objet:
         return self.name
 
     def get_x(self):
-        return self.x
+        return int(self.x)
 
     def get_y(self):
-        return self.y
+        return int(self.y)
 
     def set_x(self, x):
         self.x = x
@@ -21,17 +21,13 @@ class Objet:
         self.y = y
 
     def set_position(self, x, y):
-        self.x = x
-        self.y = y
-
-    def add_position(self, x, y):
         self.x += x
         self.y += y
 
 
 class Carburant(Objet):
     def __init__(self, name, x, y, quantite):
-        super().__init__(self, name, x, y)
+        super().__init__(name, x, y)
         self.quantite = quantite
 
     def get_quantite(self):
