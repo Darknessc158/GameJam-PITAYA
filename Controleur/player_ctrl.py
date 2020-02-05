@@ -53,6 +53,8 @@ sprite_rect.centerx = (25/2)
 sprite_rect.centery = (25/2)
 
 screen.blit(sprite, sprite_rect)
+perso = pygame.image.load("../Model/data/Cosmonaut-idle-100.png")
+screen.blit(perso, player_position)
 
 pygame.display.flip()
 
@@ -86,6 +88,7 @@ while launched:
                 if estSurPlateforme == False:
                     fall = True
             elif event.key == pygame.K_UP:
+                perso = pygame.image.load("../Model/data/Cosmonaut_jump.png")
                 haut = True
                 fall = True
             elif event.key == pygame.K_DOWN:
@@ -151,6 +154,9 @@ while launched:
                 # Recharge le fuel si le player est posé sur une plateforme
                 player1.add_fuel(0.2)
                 quantitefuel = int(player1.get_fuel())
+                #Mets l'image de marche
+                perso = pygame.image.load("../Model/data/Cosmonaut_march.png")
+        if min_y <= min_yplat and max_y >= max_yplat:  # Est sur la largeur de la plateforme
                 estSurPlateforme = True
         else:
             estSurPlateforme = False
@@ -198,6 +204,7 @@ while launched:
     defilmap += 1 #defilement de la map
     screen.blit(fond, (0, defilmap))
     screen.blit(sprite, player_position)
+    screen.blit(perso, player_position)
     #screen.blit(perso2, player_position2)
 
     # Fuel
