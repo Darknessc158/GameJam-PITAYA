@@ -186,7 +186,8 @@ while launched:
     if defilmap == 0:
         screen.fill((0, 0, 0))
     screen.blit(perso, player_position)
-    screen.blit(propulsion, (min_x, max_y))
+    if haut == True: #Affichage de la propulsion (rajouter le son de la propulsion ici)
+        screen.blit(propulsion, ((min_x -15), max_y))
 
     # Fuel
     timefuel += 1
@@ -231,31 +232,60 @@ while launched:
 
 
     # Collage des plateformes sur l'ecran
+    timesprite = 1000;
     for plateforme in plateformes:
         if plateforme.get_y() >= 0 and plateforme.get_y() <= 768:
             if(plateforme.get_type() == 'poison'):
                 if plateforme.get_long() == 50:
-                    pique = pygame.image.load("../Model/data/plateformes/pike_50_1.png")
+                    if (boucle % timesprite) == 0:
+                        pique = pygame.image.load("../Model/data/plateformes/pike_50_1.png")
+                    else:
+                        pique = pygame.image.load("../Model/data/plateformes/pike_50_2.png")
                 elif plateforme.get_long() == 100:
-                    pique = pygame.image.load("../Model/data/plateformes/pike_100_1.png")
+                    if (boucle % timesprite) == 0:
+                        pique = pygame.image.load("../Model/data/plateformes/pike_100_1.png")
+                    else:
+                        pique = pygame.image.load("../Model/data/plateformes/pike_100_2.png")
                 elif plateforme.get_long() == 150:
-                    pique = pygame.image.load("../Model/data/plateformes/pike_150_1.png")
+                    if (boucle % timesprite) == 0:
+                        pique = pygame.image.load("../Model/data/plateformes/pike_150_1.png")
+                    else:
+                        pique = pygame.image.load("../Model/data/plateformes/pike_150_2.png")
                 screen.blit(pique, (plateforme.get_x(), plateforme.get_y()))
             elif(plateforme.get_type() == 'teleportation'):
                 if plateforme.get_long() == 50:
-                    portal = pygame.image.load("../Model/data/plateformes/portal_50_1.png")
+                    if (boucle % timesprite) == 0:
+                        portal = pygame.image.load("../Model/data/plateformes/portal_50_1.png")
+                    else:
+                        portal = pygame.image.load("../Model/data/plateformes/portal_50_2.png")
                 elif plateforme.get_long() == 100:
-                    portal = pygame.image.load("../Model/data/plateformes/portal_100_1.png")
+                    if (boucle % timesprite) == 0:
+                        portal = pygame.image.load("../Model/data/plateformes/portal_100_1.png")
+                    else:
+                        portal = pygame.image.load("../Model/data/plateformes/portal_100_2.png")
                 elif plateforme.get_long() == 150:
-                    portal = pygame.image.load("../Model/data/plateformes/portal_150_1.png")
+                    if (boucle % timesprite) == 0:
+                        portal = pygame.image.load("../Model/data/plateformes/portal_150_1.png")
+                    else:
+                        portal = pygame.image.load("../Model/data/plateformes/portal_150_3.png")
+
                 screen.blit(portal, (plateforme.get_x(), plateforme.get_y()))
             elif(plateforme.get_type() == 'CarburantMoins'):
                 if plateforme.get_long() == 50:
-                    fire = pygame.image.load("../Model/data/plateformes/fire_50_1.png")
+                    if (boucle % timesprite) == 0:
+                        fire = pygame.image.load("../Model/data/plateformes/fire_50_1.png")
+                    else:
+                        fire = pygame.image.load("../Model/data/plateformes/fire_50_2.png")
                 elif plateforme.get_long() == 100:
-                    fire = pygame.image.load("../Model/data/plateformes/fire_100_1.png")
+                    if (boucle % timesprite) == 0:
+                        fire = pygame.image.load("../Model/data/plateformes/fire_100_1.png")
+                    else:
+                        fire = pygame.image.load("../Model/data/plateformes/fire_100_2.png")
                 elif plateforme.get_long() == 150:
-                    fire = pygame.image.load("../Model/data/plateformes/fire_150_1.png")
+                    if (boucle % timesprite) == 0:
+                        fire = pygame.image.load("../Model/data/plateformes/fire_150_1.png")
+                    else:
+                        fire = pygame.image.load("../Model/data/plateformes/fire_150_2.png")
                 screen.blit(fire, (plateforme.get_x(), plateforme.get_y()))
             else:
                 if plateforme.get_long() == 50:
