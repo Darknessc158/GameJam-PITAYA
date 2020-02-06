@@ -30,11 +30,12 @@ def launch() :
 
     # Background
     fond = pygame.image.load("../Model/data/map_background.png").convert() #map jusqu'a 10000px
-    defilmap = -9000
+    defilmap = -14000
     # Chargement et collage du personnage
     # convert alpha pour la transparance du png
     perso = pygame.image.load("../Model/data/cosmonaut-idle-100.png") #image du perso de base
-
+    background_objects = [[0.25, [120, 10, 70, 400]], [0.25, [280, 30, 40, 400]], [0.5, [30, 40, 40, 400]],
+                          [0.5, [130, 90, 100, 400]], [0.5, [300, 80, 120, 400]]]
     ## ici variables pour retenir en mémoire l’état des touches
 
     #variable deplacement
@@ -57,7 +58,7 @@ def launch() :
     timefuel = 0
     nbboucle = 0
     boucle = 0
-
+    true_scroll = [0, 0]
     launched = True
     powerup = False #powerup actif ou non
     propulsion = pygame.image.load("../Model/data/air_propulsion.png")
@@ -210,6 +211,7 @@ def launch() :
         if haut == True: #Affichage de la propulsion (rajouter le son de la propulsion ici)
             screen.blit(propulsion, ((min_x -15), max_y))
 
+        
         # Fuel
         timefuel += 1
         if (timefuel % 20) == 0: #Retourne la duree depuis que pygame.init a été appeler en ms
