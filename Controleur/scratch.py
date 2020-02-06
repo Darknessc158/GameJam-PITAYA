@@ -103,7 +103,7 @@ def main_menu():
         else:
             text_highscore = text_format("HIGHSCORE", font, 75, (153,153,0))
         if selected == "quit":
-            text_quit = text_format("QUIT", font, 75, white)
+            text_quit = text_format("QUIT", font, 75, (150,150,145))
         else:
             text_quit = text_format("QUIT", font, 75, (153,153,0))
 
@@ -114,11 +114,11 @@ def main_menu():
         quit_rect = text_quit.get_rect()
 
         # Main Menu Text
-        screen.blit(title, title_rect)
-        screen.blit(text_start, (screen_width / 2 - (start_rect[2] / 2)-100, 150))
-        screen.blit(text_highscore, (screen_width / 2 - (highscore_rect[2] / 2)-100 , 300))
-        screen.blit(text_options, (screen_width / 2 - (options_rect[2] / 2)-100, 450))
-        screen.blit(text_quit, (screen_width / 2 - (quit_rect[2] / 2)-100, 600))
+        screen.blit(title, (screen_width / 2 - (title_rect[2] / 2), 10))
+        screen.blit(text_start, (screen_width / 2 - (start_rect[2] / 2), 150))
+        screen.blit(text_highscore, (screen_width / 2 - (highscore_rect[2] / 2), 300))
+        screen.blit(text_options, (screen_width / 2 - (options_rect[2] / 2), 450))
+        screen.blit(text_quit, (screen_width / 2 - (quit_rect[2] / 2), 600))
         pygame.display.update()
         clock.tick(FPS)
         pygame.display.set_caption("Gorgobalt in the Sky")
