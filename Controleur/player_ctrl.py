@@ -103,9 +103,9 @@ while launched:
 
     # calcul de la surface de l'image du player
     min_x = int(player1.get_x())
-    max_x = int(player1.get_x() + 100)
+    max_x = int(player1.get_x() + 65)
     min_y = int(player1.get_y())
-    max_y = int(player1.get_y() + 100)
+    max_y = int(player1.get_y() + 90)
 
     #Gestion des bords de l'ecran
     # Droite / Gauche
@@ -138,7 +138,7 @@ while launched:
                 player_position = player1.movePositCourante(0, fallspeed)  # descends à la vitesse des plateformes
                 if plateforme.get_type() == 'teleportation':
                     player_position = player1.movePositTeleportation()
-            if (min_yplat - 5) <= max_y <= (min_yplat + 5):  # colisation par en haut
+            if (min_yplat - 10) <= max_y <= (min_yplat + 10):  # colisation par en haut
                 if plateforme.get_type() == 'poison':
                     launched = False
                     file_highscore = open("../Model/highscore.txt", "a")
@@ -283,7 +283,7 @@ while launched:
         if niveauFall == 0 or niveauFall == 1:
             player_position = player1.movePositCourante(0, -0.50)
             player_position = player1.movePositCourante(0, -1.5)
-            player_position = player1.movePositCourante(0, -2.5)
+            player_position = player1.movePositCourante(0, -3.5)
         elif niveauFall == 2 or niveauFall == 3 :
             player_position = player1.movePositCourante(0, -1.5)
             player_position = player1.movePositCourante(0, -2.5)
