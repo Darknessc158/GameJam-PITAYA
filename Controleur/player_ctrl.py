@@ -118,6 +118,9 @@ while launched:
         haut = False
     elif max_y >= 768:
         launched = False
+        file_highscore = open("../Model/highscore.txt", "a")
+        file_highscore.write("Score :"+str(game1.get_score()) + " Time :"+str(game1.get_time()))
+        file_highscore.close()
 
 
     # Gestion collision player-plateformes
@@ -138,6 +141,9 @@ while launched:
             if (min_yplat - 5) <= max_y <= (min_yplat + 5):  # colisation par en haut
                 if plateforme.get_type() == 'poison':
                     launched = False
+                    file_highscore = open("../Model/highscore.txt", "w")
+                    file_highscore.write("Score :" + str(game1.get_score()) + "Time :" + str(game1.get_time()))
+                    file_highscore.close()
                 elif plateforme.get_type() == 'teleportation':
                     player_position = player1.movePositTeleportation()
                 elif plateforme.get_type() == 'CarburantMoins':
@@ -179,6 +185,9 @@ while launched:
         player1.set_fuel(quantitefuel)
     if quantitefuel <= 0:
         launched = False
+        file_highscore = open("../Model/highscore.txt", "w")
+        file_highscore.write("Score :" + str(game1.get_score()) + "Time :" + str(game1.get_time()))
+        file_highscore.close()
     rect = pygame.Rect(740, 677, quantitefuel*2, 25)
     pygame.draw.rect(screen, (255, 0, 0), rect)
     text = pygame.font.Font('freesansbold.ttf', 20)
