@@ -119,7 +119,7 @@ while launched:
     elif max_y >= 768:
         launched = False
         file_highscore = open("../Model/highscore.txt", "a")
-        file_highscore.write("Score :"+str(game1.get_score()) + " Time :"+str(game1.get_time()))
+        file_highscore.write(str(game1.get_score()) + "\n")
         file_highscore.close()
 
 
@@ -141,8 +141,8 @@ while launched:
             if (min_yplat - 5) <= max_y <= (min_yplat + 5):  # colisation par en haut
                 if plateforme.get_type() == 'poison':
                     launched = False
-                    file_highscore = open("../Model/highscore.txt", "w")
-                    file_highscore.write("Score :" + str(game1.get_score()) + "Time :" + str(game1.get_time()))
+                    file_highscore = open("../Model/highscore.txt", "a")
+                    file_highscore.write(str(game1.get_score()) + "\n")
                     file_highscore.close()
                 elif plateforme.get_type() == 'teleportation':
                     player_position = player1.movePositTeleportation()
@@ -185,8 +185,8 @@ while launched:
         player1.set_fuel(quantitefuel)
     if quantitefuel <= 0:
         launched = False
-        file_highscore = open("../Model/highscore.txt", "w")
-        file_highscore.write("Score :" + str(game1.get_score()) + "Time :" + str(game1.get_time()))
+        file_highscore = open("../Model/highscore.txt", "a")
+        file_highscore.write(str(game1.get_score()) + "\n")
         file_highscore.close()
     rect = pygame.Rect(740, 677, quantitefuel*2, 25)
     pygame.draw.rect(screen, (255, 0, 0), rect)
@@ -260,7 +260,6 @@ while launched:
                     quantitefuel = player1.get_fuel()
                 if (objet.get_name() == "bouteille"):
                     fallspeed = fallspeed + 4
-                    player1.movePositCourante(player1.get_x(), fallspeed)
                     powerup = True
                     game1.add_score(40)
                     nbboucle = boucle
