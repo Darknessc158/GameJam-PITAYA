@@ -63,7 +63,7 @@ def main_menu():
                 quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP and selected == "start":
-                    selected = "start"
+                    selected = "quit"
                 elif event.key == pygame.K_DOWN and selected == "start":
                     selected = "highscore"
                 elif event.key == pygame.K_UP and selected == "highscore":
@@ -77,7 +77,7 @@ def main_menu():
                 elif event.key == pygame.K_UP and selected == "quit":
                     selected = "options"
                 elif event.key == pygame.K_DOWN and selected == "quit":
-                    selected = "quit"
+                    selected = "start"
                 if event.key == pygame.K_RETURN:
                     if selected == "start":
                         player_ctrl.launch()

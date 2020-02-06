@@ -46,7 +46,7 @@ def launch() :
     boost = False
     fuelHit = False
     niveauFall = 0
-    fallspeed = 1
+    fallspeed = game1.get_diffculty_set()
 
     listekeypressed = []
 
@@ -64,18 +64,18 @@ def launch() :
     estSurPlateforme = False
     new_game = True
 
-    def crash():
+    def crash(screen):
         crash= True
-        text = pygame.font.Font('freesansbold.ttf', 50)
-        fuel = text.render("Crash", True, (0, 0, 0))
-        screen.blit(fuel, (500, 400))
-
         while crash:
+            text = pygame.font.Font('freesansbold.ttf', 75)
+            carb = text.render('Game Over', True, (0, 0, 0))
+            screen.blit(carb, (295, 300))
             for event in pygame.event.get():
                 # print(event)
                 if event.type == pygame.KEYDOWN:
                     crash = False
-        pygame.display.flip()
+            pygame.display.flip()
+
     while launched:
         if (new_game):
             time_var = T.time()
@@ -145,7 +145,7 @@ def launch() :
             file_highscore = open("../Model/highscore.txt", "a")
             file_highscore.write(str(game1.get_score()) + "\n")
             file_highscore.close()
-            crash()
+            crash(screen)
             new_game = True
 
 
@@ -170,6 +170,7 @@ def launch() :
                         file_highscore = open("../Model/highscore.txt", "a")
                         file_highscore.write(str(game1.get_score()) + "\n")
                         file_highscore.close()
+                        crash(screen)
                         new_game = True
 
                     elif plateforme.get_type() == 'teleportation':
@@ -219,6 +220,7 @@ def launch() :
             file_highscore = open("../Model/highscore.txt", "a")
             file_highscore.write(str(game1.get_score()) + "\n")
             file_highscore.close()
+            crash(screen)
             new_game = True
         rect = pygame.Rect(740, 677, quantitefuel*2, 25)
         pygame.draw.rect(screen, (255, 0, 0), rect)
@@ -235,22 +237,22 @@ def launch() :
 
         # Message alerte fuel
         if player1.get_fuel() <= 30:
-            text = pygame.font.Font('freesansbold.ttf', 25)
+            text = pygame.font.Font('freesansbold.ttf', 35)
             carb = text.render('Alerte ! Alerte ! Niveau carburant bas', True, (255, 0, 0))
-            screen.blit(carb, (325, 200))
+            screen.blit(carb, (195, 165))
 
 
         # Score
         game1.set_time(int(pygame.time.get_ticks()/1000)) #time in ms depuis pygame.init()
         if (timefuel % 50) == 0:# ajout de score vitesse de base
             game1.add_score(1)
-        text = pygame.font.Font('freesansbold.ttf', 50)
+        text = pygame.font.Font('freesansbold.ttf', 60)
         text2 = pygame.font.Font('freesansbold.ttf', 15)
         score = text.render('Score : {}'.format(game1.get_score()), True, (0, 0, 0))
         time_end= T.time()
         time = text2.render('Temps : {} secondes'.format(int(time_end-time_var)), True, (0, 0, 0))
-        screen.blit(score, (20, 20))
-        screen.blit(time, (20, 60))
+        screen.blit(score, (15, 20))
+        screen.blit(time, (20, 70))
 
 
         # Collage des plateformes sur l'ecran

@@ -140,6 +140,12 @@ class Game:
 
         return powerups
 
+    def get_diffculty_set(self):
+        file_difficulty = open("../Model/highscore.txt", "r")
+        difficulty = int(file_difficulty.readline())
+        return difficulty
+
+
 
 if __name__ == '__main__':
     t = int((time.time() % 60))
