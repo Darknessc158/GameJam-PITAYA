@@ -328,4 +328,3 @@ while launched:
     pygame.display.flip()
 
     boucle += 1
-
