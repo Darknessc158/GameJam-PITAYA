@@ -6,6 +6,7 @@ import  options
 from pygame.locals import *
 
 # Game Initialization
+
 pygame.init()
 file = '../Model/data/Digital Native.mp3'
 pygame.mixer.init()
@@ -103,7 +104,7 @@ def main_menu():
         else:
             text_highscore = text_format("HIGHSCORE", font, 75, (153,153,0))
         if selected == "quit":
-            text_quit = text_format("QUIT", font, 75, (150,150,145))
+            text_quit = text_format("QUIT", font, 75, (80,80,80))
         else:
             text_quit = text_format("QUIT", font, 75, (153,153,0))
 
