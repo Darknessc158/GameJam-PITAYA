@@ -51,7 +51,11 @@ def options_menu():
                 elif event.key == pygame.K_UP and selected == "difficulte":
                     selected = "regles"
                 elif event.key == pygame.K_DOWN and selected == "difficulte":
+                    selected = "retour"
+                elif event.key == pygame.K_UP and selected == "retour":
                     selected = "difficulte"
+                elif event.key == pygame.K_DOWN and selected == "retour":
+                    selected = "retour"
 
                 if event.key == pygame.K_RETURN:
                     if selected == "regles":
@@ -59,6 +63,9 @@ def options_menu():
                     if selected == "difficulte":
                         pygame.quit()
                         quit()
+                    if selected == "retour":
+                        menu = False
+
 
         # Main Menu UI
         screen.fill(black)
@@ -71,16 +78,22 @@ def options_menu():
             difficulte = text_format("Difficulte", font, 70, white)
         else:
             difficulte = text_format("Difficulte", font, 70, yellow)
+        if selected == "retour":
+            retour = text_format("Retour", font, 70, white)
+        else:
+            retour = text_format("Retour", font, 70, yellow)
 
         title = text_format("OPTIONS", font, 70, white)
         title_rect = title.get_rect()
         regles_rect = regles.get_rect()
         difficulte_rect = difficulte.get_rect()
+        retour_rect = retour.get_rect()
 
         # Main Menu Text
         screen.blit(title, (screen_width / 2 - (title_rect[2] / 2), 80))
         screen.blit(regles, (screen_width / 2 - (regles_rect[2] / 2) , 225))
         screen.blit(difficulte, (screen_width / 2 - (difficulte_rect[2] / 2) , 375))
+        screen.blit(retour, (screen_width / 2 - (retour_rect[2] / 2) , 525))
 
         pygame.display.update()
         clock.tick(FPS)

@@ -6,9 +6,8 @@ sys.path.append('../GameJam-PITAYA/Model')
 import pygame
 from Model.player import  Player
 from Model.game import Game
-from Model.objet import Ennemi
 from pygame.locals import *
-import time
+import time as T
 
 def launch() :
 
@@ -64,8 +63,24 @@ def launch() :
     powerup = False #powerup actif ou non
     propulsion = pygame.image.load("../Model/data/air_propulsion.png")
     estSurPlateforme = False
+    new_game = True
 
+    def crash():
+        crash= True
+        text = pygame.font.Font('freesansbold.ttf', 50)
+        fuel = text.render("Crash", True, (0, 0, 0))
+        screen.blit(fuel, (500, 400))
+
+        while crash:
+            for event in pygame.event.get():
+                # print(event)
+                if event.type == pygame.KEYDOWN:
+                    crash = False
+        pygame.display.flip()
     while launched:
+        if (new_game):
+            time_var = T.time()
+            new_game = False
         fall = True  # Pour le faire rechuter quand il quitte la plateforme
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -131,6 +146,8 @@ def launch() :
             file_highscore = open("../Model/highscore.txt", "a")
             file_highscore.write(str(game1.get_score()) + "\n")
             file_highscore.close()
+            crash()
+            new_game = True
 
 
         # Gestion collision player-plateformes
@@ -154,6 +171,8 @@ def launch() :
                         file_highscore = open("../Model/highscore.txt", "a")
                         file_highscore.write(str(game1.get_score()) + "\n")
                         file_highscore.close()
+                        new_game = True
+
                     elif plateforme.get_type() == 'teleportation':
                         player_position = player1.movePositTeleportation()
                     elif plateforme.get_type() == 'CarburantMoins':
@@ -202,6 +221,7 @@ def launch() :
             file_highscore = open("../Model/highscore.txt", "a")
             file_highscore.write(str(game1.get_score()) + "\n")
             file_highscore.close()
+            new_game = True
         rect = pygame.Rect(740, 677, quantitefuel*2, 25)
         pygame.draw.rect(screen, (255, 0, 0), rect)
         text = pygame.font.Font('freesansbold.ttf', 20)
@@ -229,7 +249,8 @@ def launch() :
         text = pygame.font.Font('freesansbold.ttf', 50)
         text2 = pygame.font.Font('freesansbold.ttf', 15)
         score = text.render('Score : {}'.format(game1.get_score()), True, (0, 0, 0))
-        time = text2.render('Temps : {} secondes'.format(game1.get_time()), True, (0, 0, 0))
+        time_end= T.time()
+        time = text2.render('Temps : {} secondes'.format(int(time_end-time_var)), True, (0, 0, 0))
         screen.blit(score, (20, 20))
         screen.blit(time, (20, 60))
 
@@ -334,6 +355,7 @@ def launch() :
                             quantitefuel = player1.get_fuel()
                         if (objet.get_name() == "bouteille"):
                             fallspeed = fallspeed + 4
+                            fall = False
                             powerup = True
                             game1.add_score(40)
                             nbboucle = boucle
@@ -341,6 +363,7 @@ def launch() :
             #Desactivation de l'effet du powerup
             if nbboucle <= (boucle-150) and powerup == True:  # On remet la vitesse normal apres 200 boucles
                 fallspeed = fallspeed - 4
+                fall = True
                 powerup = False
             #chute des objets
             if objet.get_y() <= 800:
@@ -398,8 +421,8 @@ def launch() :
         # recollage du pers
         screen.blit(perso, player_position)
 
-
         # Rafraichissement
         pygame.display.flip()
 
         boucle += 1
+
