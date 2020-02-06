@@ -56,23 +56,23 @@ def regles_menu():
         nuage_rect = nuages_regles.get_rect()
 
         poison = pygame.image.load("../Model/data/plateformes/pike_150_1.png").convert_alpha()
-        poison_regles = text_format(" Plateforme radioactive, mort instantanee ", font, 25, (153,153,0))
+        poison_regles = text_format(" : Plateforme radioactive, mort instantanee ", font, 25, (153,153,0))
         poison_rect = poison_regles.get_rect()
 
-        teleportation = pygame.image.load("../Model/data/plateformes/portal_100_1.png").convert_alpha()
-        teleportation_regles = text_format("Plateforme trou noir, permet une teleportation    ", font, 25, (153,153,0))
+        teleportation = pygame.image.load("../Model/data/plateformes/portal_150_1.png").convert_alpha()
+        teleportation_regles = text_format(" : Plateforme trou noir, permet une teleportation    ", font, 25, (153,153,0))
         teleportation_rect = teleportation_regles.get_rect()
 
-        feu = pygame.image.load("../Model/data/plateformes/fire_100_1.png").convert_alpha()
-        feu_regles = text_format("Plateforme feu, en contact carburant reduit à 25% ", font, 25, (153,153,0))
+        feu = pygame.image.load("../Model/data/plateformes/fire_150_1.png").convert_alpha()
+        feu_regles = text_format(" : Plateforme feu, en contact carburant reduit à 25% ", font, 25, (153,153,0))
         feu_rect = feu_regles.get_rect()
 
         booster = pygame.image.load("../Model/data/oxygen_tank.png").convert_alpha()
-        booster_regles = text_format("Power-up booster permet une acceleration verticale  ", font, 25, (153,153,0))
+        booster_regles = text_format(" : Power-up booster permet une acceleration verticale  ", font, 25, (153,153,0))
         booster_rect = booster_regles.get_rect()
 
         canister = pygame.image.load("../Model/data/fuel.png").convert_alpha()
-        canister_regles = text_format("Recharge bouteille permet de remplir votre reservoir air ", font, 75, (153,153,0))
+        canister_regles = text_format(" : Recharge bouteille permet de remplir votre reservoir air ", font, 25, (153,153,0))
         canister_rect = canister_regles.get_rect()
 
         # Main Menu UI
@@ -82,14 +82,14 @@ def regles_menu():
         screen.blit(nuages_regles, (200,165))
         screen.blit(poison, (15, 275))
         screen.blit(poison_regles, (200, 265))
-        screen.blit(teleportation, (15, 375))
-        screen.blit(teleportation_regles, (200, 490))
-        screen.blit(feu, (15, 475))
-        screen.blit(feu_regles, (200, 515))
-        screen.blit(booster, (15, 575))
-        screen.blit(booster_regles, (200, 640))
-        screen.blit(canister, (15, 675))
-        screen.blit(canister_regles, (200, 665))
+        screen.blit(teleportation, (15, 370))
+        screen.blit(teleportation_regles, (200, 360))
+        screen.blit(feu, (15, 470))
+        screen.blit(feu_regles, (200, 460))
+        screen.blit(booster, (80, 545))
+        screen.blit(booster_regles, (200, 570))
+        screen.blit(canister, (70, 645))
+        screen.blit(canister_regles, (200, 657))
 
 
 
