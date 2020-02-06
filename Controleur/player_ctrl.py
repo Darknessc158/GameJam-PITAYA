@@ -60,6 +60,7 @@ boucle = 0
 
 launched = True
 powerup = False #powerup actif ou non
+propulsion = pygame.image.load("../Model/data/air_propulsion.png")
 estSurPlateforme = False
 
 while launched:
@@ -73,18 +74,25 @@ while launched:
                 perso = pygame.image.load("../Model/data/cosmonaut-idle2-100.png")
                 #Sprite droit
                 droite = True
+                if estSurPlateforme == True:
+                    perso = pygame.image.load("../Model/data/cosmonaut-march-100.png")
             elif pygame.K_LEFT in listekeypressed:
-                perso = pygame.image.load("../Model/data/cosmonaut-jump-100.png")
+                perso = pygame.image.load("../Model/data/cosmonaut-idle-100-gauche.png")
                 gauche = True
+                if estSurPlateforme == True:
+                    perso = pygame.image.load("../Model/data/cosmonaut-march-100-gauche.png")
             if pygame.K_UP in listekeypressed:
-                perso = pygame.image.load("../Model/data/cosmonaut-jump-100.png")
+                perso = pygame.image.load("../Model/data/cosmonaut-jump-wind-100-gauche.png")
                 haut = True
                 if estSurPlateforme == False:
                     fall = True
-            elif event.key == pygame.K_UP:
-                perso = pygame.image.load("../Model/data/cosmonaut-jump-100.png")
-                screen.blit(perso, player_position)
-                haut = True
+                    if pygame.K_LEFT in listekeypressed:
+                        perso = pygame.image.load("../Model/data/cosmonaut-idle-100-gauche.png")
+                    elif pygame.K_RIGHT in listekeypressed:
+                        perso = pygame.image.load("../Model/data/cosmonaut-idle2-100.png")
+                    else:
+                        perso = pygame.image.load("../Model/data/cosmonaut-jump-100.png")
+
             elif pygame.K_DOWN in listekeypressed:
                 perso = pygame.image.load("../Model/data/cosmonaut-jump-100.png")
                 bas = True
@@ -155,8 +163,6 @@ while launched:
                 # Rechargement du fuel
                 player1.add_fuel(0.2)
                 quantitefuel = int(player1.get_fuel())
-                # Mets l'image de pose
-                perso = pygame.image.load("../Model/data/cosmonaut-march-100.png")
 
         if min_y <= min_yplat and max_y >= max_yplat and powerup == False:  # Est sur la largeur de la plateforme
             if (max_xplat - 5) <= min_x <= (max_xplat + 5):  # collision par la droite (petite marge pour eviter les bug de traversement)
@@ -164,8 +170,11 @@ while launched:
             if (min_xplat - 5) <= max_x <= (min_xplat + 5):  # collision par la gauche
                 droite = False
 
-        if min_y <= min_yplat and max_y >= max_yplat and powerup == False and min_xplat <= max_x and min_x <= max_xplat and powerup == False:# Il est sur une plateforme
+        if min_y <= min_yplat and max_y >= max_yplat and powerup == False and min_xplat <= max_x and min_x <= max_xplat:# Il est sur une plateforme
             fall = False
+            estSurPlateforme = True
+        else:
+            estSurPlateforme = False
 
     # Re-collage du fond et du player
     defilmap += 1  # defilement de la map
@@ -177,6 +186,7 @@ while launched:
     if defilmap == 0:
         screen.fill((0, 0, 0))
     screen.blit(perso, player_position)
+    screen.blit(propulsion, (min_x, max_y))
 
     # Fuel
     timefuel += 1
@@ -222,17 +232,43 @@ while launched:
 
     # Collage des plateformes sur l'ecran
     for plateforme in plateformes:
-        rect = pygame.Rect(int(plateforme.get_x()), int(plateforme.get_y()), int(plateforme.get_long()), int(plateforme.get_larg()))
-        if(plateforme.get_type() == 'poison'):
-            pygame.draw.rect(screen, (0, 255, 0), rect)
-        elif(plateforme.get_type() == 'teleportation'):
-            pygame.draw.rect(screen, (0, 191, 255), rect)
-        elif(plateforme.get_type() == 'CarburantMoins'):
-            pygame.draw.rect(screen, (255,255,0), rect)
-        else:
-            pygame.draw.rect(screen, (105, 105, 105), rect)
-        plateforme.set_position(0, fallspeed)
-    screen.blit(perso, player_position)
+        if plateforme.get_y() >= 0 and plateforme.get_y() <= 768:
+            if(plateforme.get_type() == 'poison'):
+                if plateforme.get_long() == 50:
+                    pique = pygame.image.load("../Model/data/plateformes/pike_50_1.png")
+                elif plateforme.get_long() == 100:
+                    pique = pygame.image.load("../Model/data/plateformes/pike_100_1.png")
+                elif plateforme.get_long() == 150:
+                    pique = pygame.image.load("../Model/data/plateformes/pike_150_1.png")
+                screen.blit(pique, (plateforme.get_x(), plateforme.get_y()))
+            elif(plateforme.get_type() == 'teleportation'):
+                if plateforme.get_long() == 50:
+                    portal = pygame.image.load("../Model/data/plateformes/portal_50_1.png")
+                elif plateforme.get_long() == 100:
+                    portal = pygame.image.load("../Model/data/plateformes/portal_100_1.png")
+                elif plateforme.get_long() == 150:
+                    portal = pygame.image.load("../Model/data/plateformes/portal_150_1.png")
+                screen.blit(portal, (plateforme.get_x(), plateforme.get_y()))
+            elif(plateforme.get_type() == 'CarburantMoins'):
+                if plateforme.get_long() == 50:
+                    fire = pygame.image.load("../Model/data/plateformes/fire_50_1.png")
+                elif plateforme.get_long() == 100:
+                    fire = pygame.image.load("../Model/data/plateformes/fire_100_1.png")
+                elif plateforme.get_long() == 150:
+                    fire = pygame.image.load("../Model/data/plateformes/fire_150_1.png")
+                screen.blit(fire, (plateforme.get_x(), plateforme.get_y()))
+            else:
+                if plateforme.get_long() == 50:
+                    cloud = pygame.image.load("../Model/data/plateformes/cloud_50.png")
+                elif plateforme.get_long() == 100:
+                    cloud = pygame.image.load("../Model/data/plateformes/cloud_100.png")
+                elif plateforme.get_long() == 150:
+                    cloud = pygame.image.load("../Model/data/plateformes/cloud_150.png")
+                screen.blit(cloud, (plateforme.get_x(), plateforme.get_y()))
+        #Chute des plateformes
+        if plateforme.get_y() <= 800:
+            plateforme.set_position(0, fallspeed)
+    # screen.blit(perso, player_position)
 
     #Augmentation de difficulte
     if timefuel % 500 == 0:
@@ -241,34 +277,41 @@ while launched:
         print(niveauFall)
     #Power up
     for objet in powerups:
-        if (objet.get_name() == "carburant"):
-            pygame.draw.circle(screen, (255, 0, 0), (objet.get_x(), objet.get_y()), 20)
-        elif (objet.get_name() == "bouteille"):
-            pygame.draw.circle(screen, (128, 128, 128), (objet.get_x(), objet.get_y()), 20)
-        objet.set_position(0, fallspeed)
-        # Verif si le player est sur le power up
-        #surface de l'objet
-        min_yobj = int(objet.get_y() - 20) # 20 == rayon du cercle
-        max_yobj = int(objet.get_y() + 20)
-        min_xobj = int(objet.get_x() - 20)
-        max_xobj = int(objet.get_x() + 20)
-        if min_yobj <= max_y and max_yobj >= min_y: #sur la largeur de l'objet
-            if min_xobj <= max_x and max_xobj >= min_x: #Sur la longueur de l'objet
-                # L'astronaute est sur l'objet
-                if (objet.get_name() == "carburant"): #Action des powerups
-                    player1.add_fuel(objet.get_quantite())
-                    quantitefuel = player1.get_fuel()
-                if (objet.get_name() == "bouteille"):
-                    fallspeed = fallspeed + 4
-                    powerup = True
-                    game1.add_score(40)
-                    nbboucle = boucle
-                powerups.remove(objet)
-    #Desactivation de l'effet du powerup
-    if nbboucle <= (boucle-150) and powerup == True:  # On remet la vitesse normal apres 200 boucles
-        fallspeed = fallspeed - 4
-        powerup = False
+        if objet.get_y() >= 0 and objet.get_y() <= 768:
+            if (objet.get_name() == "carburant"):
+                # pygame.draw.circle(screen, (255, 0, 0), (objet.get_x(), objet.get_y()), 40, False)
+                fuelimg = pygame.image.load("../Model/data/fuel.png")
+                screen.blit(fuelimg, (objet.get_x(), objet.get_y()))
+            elif (objet.get_name() == "bouteille"):
+                # pygame.draw.circle(screen, (128, 128, 128), (objet.get_x(), objet.get_y()), 20)
+                bottleimg = pygame.image.load("../Model/data/oxygen_tank.png")
+                screen.blit(bottleimg, (objet.get_x(), objet.get_y()))
 
+            # Verif si le player est sur le power up
+            #surface de l'objet
+            min_yobj = int(objet.get_y() - 20) # 20 == rayon du cercle
+            max_yobj = int(objet.get_y() + 20)
+            min_xobj = int(objet.get_x() - 20)
+            max_xobj = int(objet.get_x() + 20)
+            if min_yobj <= max_y and max_yobj >= min_y: #sur la largeur de l'objet
+                if min_xobj <= max_x and max_xobj >= min_x: #Sur la longueur de l'objet
+                    # L'astronaute est sur l'objet
+                    if (objet.get_name() == "carburant"): #Action des powerups
+                        player1.add_fuel(objet.get_quantite())
+                        quantitefuel = player1.get_fuel()
+                    if (objet.get_name() == "bouteille"):
+                        fallspeed = fallspeed + 4
+                        powerup = True
+                        game1.add_score(40)
+                        nbboucle = boucle
+                    powerups.remove(objet)
+        #Desactivation de l'effet du powerup
+        if nbboucle <= (boucle-150) and powerup == True:  # On remet la vitesse normal apres 200 boucles
+            fallspeed = fallspeed - 4
+            powerup = False
+        #chute des objets
+        if objet.get_y() <= 800:
+            objet.set_position(0, fallspeed)
 
     ## Traitement des deplacements
     # Droite / Gauche
@@ -297,27 +340,26 @@ while launched:
             player_position = player1.movePositCourante(0, 5)
     # Chute
     if fall:
-        if player1.get_x() >= 0 or player1.get_x() <= 1024:
-            if niveauFall == 0:
-                player_position = player1.movePositCourante(0, 2.5)
-            elif niveauFall == 1:
-                player_position = player1.movePositCourante(0, 2.75)
-            elif niveauFall == 2:
-                player_position = player1.movePositCourante(0, 3)
-            elif niveauFall == 3:
-                player_position = player1.movePositCourante(0, 3.25)
-            elif niveauFall == 4:
-                player_position = player1.movePositCourante(0, 3.50)
-            elif niveauFall == 5:
-                player_position = player1.movePositCourante(0, 3.75)
-            elif niveauFall == 6:
-                player_position = player1.movePositCourante(0, 4)
-            elif niveauFall == 7:
-                player_position = player1.movePositCourante(0, 4.25)
-            elif niveauFall == 8:
-                player_position = player1.movePositCourante(0, 5.50)
-            elif niveauFall > 8:
-                player_position = player1.movePositCourante(0, 6)
+        if niveauFall == 0:
+            player_position = player1.movePositCourante(0, 2.5)
+        elif niveauFall == 1:
+            player_position = player1.movePositCourante(0, 2.75)
+        elif niveauFall == 2:
+            player_position = player1.movePositCourante(0, 3)
+        elif niveauFall == 3:
+            player_position = player1.movePositCourante(0, 3.25)
+        elif niveauFall == 4:
+            player_position = player1.movePositCourante(0, 3.50)
+        elif niveauFall == 5:
+            player_position = player1.movePositCourante(0, 3.75)
+        elif niveauFall == 6:
+            player_position = player1.movePositCourante(0, 4)
+        elif niveauFall == 7:
+            player_position = player1.movePositCourante(0, 4.25)
+        elif niveauFall == 8:
+            player_position = player1.movePositCourante(0, 5.50)
+        elif niveauFall > 8:
+            player_position = player1.movePositCourante(0, 6)
 
 
     # recollage du pers

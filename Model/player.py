@@ -36,7 +36,7 @@ class Player:
     def movePositCourante(self, x, y):
         self.x += x
         self.y += y
-        return (self.x, self.y)
+        return (int(self.x), int(self.y))
 
     def movePositTeleportation(self):
         self.x = random.randrange(10, 980, 25)
