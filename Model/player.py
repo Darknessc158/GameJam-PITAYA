@@ -39,7 +39,7 @@ class Player:
         return (self.x, self.y)
 
     def movePositTeleportation(self):
-        self.x = random.randrange(0, 1024, 25)
+        self.x = random.randrange(10, 980, 25)
         self.y -= 175
         return (self.x, self.y)
 

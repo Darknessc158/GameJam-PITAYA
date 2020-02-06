@@ -10,6 +10,7 @@ from Model.objet import Ennemi
 from pygame.locals import *
 import time
 
+
 # Creation d'un joueur au centre de la map
 player1 = Player(1, int(1024/2)-40, int(768/2)-40, 100)
 player_position = (player1.get_x(), player1.get_y())
@@ -25,6 +26,7 @@ powerups = game1.generate_objet().copy()
 # Test des evenements
 pygame.init()
 screen = pygame.display.set_mode((1024, 768), RESIZABLE)
+
 
 # Background
 fond = pygame.image.load("../Model/data/map_background.png").convert() #map jusqu'a 10000px
@@ -44,7 +46,7 @@ fall = True
 boost = False
 fuelHit = False
 niveauFall = 0
-fallspeed = 1
+fallspeed = 2
 
 listekeypressed = []
 
@@ -68,10 +70,11 @@ while launched:
         elif event.type == pygame.KEYDOWN: #Si une touche est enfoncée
             listekeypressed.append(event.key) #insertion des touches enfoncées dans la liste
             if pygame.K_RIGHT in listekeypressed:
+                perso = pygame.image.load("../Model/data/cosmonaut-idle2-100.png")
                 #Sprite droit
                 droite = True
             elif pygame.K_LEFT in listekeypressed:
-                perso = pygame.image.load("../Model/data/cosmonaut-idle2-100.png")
+                perso = pygame.image.load("../Model/data/cosmonaut-jump-100.png")
                 gauche = True
             if pygame.K_UP in listekeypressed:
                 perso = pygame.image.load("../Model/data/cosmonaut-jump-100.png")
@@ -87,7 +90,8 @@ while launched:
                 bas = True
 
         elif event.type == pygame.KEYUP: #Si une touche est relachée
-            listekeypressed.remove(event.key)## supression de la touche relâchée
+            if len(listekeypressed) != 0:
+                listekeypressed.remove(event.key)## supression de la touche relâchée
             if event.key == pygame.K_RIGHT:
                 droite = False
             elif event.key == pygame.K_LEFT:
@@ -131,10 +135,6 @@ while launched:
                 player_position = player1.movePositCourante(0, fallspeed)  # descends à la vitesse des plateformes
                 if plateforme.get_type() == 'teleportation':
                     player_position = player1.movePositTeleportation()
-            if (min_yplat - 5) <= max_y <= (min_yplat + 5):  # collision par le haut
-                haut = False
-                # player_position = player1.movePositCourante(0, fallspeed)
-                # fall = False
             if (min_yplat - 5) <= max_y <= (min_yplat + 5):  # colisation par en haut
                 if plateforme.get_type() == 'poison':
                     launched = False
@@ -151,11 +151,6 @@ while launched:
                 quantitefuel = int(player1.get_fuel())
                 # Mets l'image de pose
                 perso = pygame.image.load("../Model/data/cosmonaut-march-100.png")
-                #Action des plateformes
-                if plateforme.get_type() == 'poison':
-                    launched = False
-                elif plateforme.get_type() == 'teleportation':
-                    player_position = player1.movePositTeleportation()
 
         if min_y <= min_yplat and max_y >= max_yplat and powerup == False:  # Est sur la largeur de la plateforme
             if (max_xplat - 5) <= min_x <= (max_xplat + 5):  # collision par la droite (petite marge pour eviter les bug de traversement)
@@ -192,9 +187,9 @@ while launched:
 
     #Fuel reduit alert
     if fuelHit == True:
-        text = pygame.font.Font('freesansbold.ttf', 55)
+        text = pygame.font.Font('freesansbold.ttf', 85)
         carb = text.render('-75', True, (255, 0, 0))
-        screen.blit(carb, (900, 625))
+        screen.blit(carb, (900, 650))
         fuelHit = False
 
     # Message alerte fuel
@@ -234,6 +229,7 @@ while launched:
     if timefuel % 500 == 0:
         niveauFall += 1
         fallspeed += 0.25
+        print(niveauFall)
     #Power up
     for objet in powerups:
         if (objet.get_name() == "carburant"):
@@ -255,6 +251,7 @@ while launched:
                     quantitefuel = player1.get_fuel()
                 if (objet.get_name() == "bouteille"):
                     fallspeed = fallspeed + 4
+                    player1.movePositCourante(player1.get_x(), fallspeed)
                     powerup = True
                     game1.add_score(40)
                     nbboucle = boucle
@@ -268,42 +265,51 @@ while launched:
     ## Traitement des deplacements
     # Droite / Gauche
     if droite:
-            player_position = player1.movePositCourante(3.5, 0)
-            player_position = player1.movePositCourante(0, 1.5)# chute
+            player_position = player1.movePositCourante(3.75, 0)
+            player_position = player1.movePositCourante(0, 0.25)# chute
     elif gauche:
-            player_position = player1.movePositCourante(-3.5, 0)
-            player_position = player1.movePositCourante(0, 1.5)# chute
+            player_position = player1.movePositCourante(-3.75, 0)
+            player_position = player1.movePositCourante(0, 0.25)# chute
     # Haut / Bas
     if haut:
-        player_position = player1.movePositCourante(0, -0.25)
-        player_position = player1.movePositCourante(0, -0.50)
-        player_position = player1.movePositCourante(0, -1)
-        player_position = player1.movePositCourante(0, -1.75)
+        if niveauFall == 0 or niveauFall == 1:
+            player_position = player1.movePositCourante(0, -0.50)
+            player_position = player1.movePositCourante(0, -1.5)
+            player_position = player1.movePositCourante(0, -2.5)
+        elif niveauFall == 2 or niveauFall == 3 :
+            player_position = player1.movePositCourante(0, -1.5)
+            player_position = player1.movePositCourante(0, -2.5)
+            player_position = player1.movePositCourante(0, -2.75)
+        else:
+            player_position = player1.movePositCourante(0, -2.25)
+            player_position = player1.movePositCourante(0, -2.75)
+            player_position = player1.movePositCourante(0, -3)
+
     elif bas:
             player_position = player1.movePositCourante(0, 5)
     # Chute
     if fall:
         if player1.get_x() >= 0 or player1.get_x() <= 1024:
             if niveauFall == 0:
-                player_position = player1.movePositCourante(0, 1.5)
+                player_position = player1.movePositCourante(0, 2.5)
             elif niveauFall == 1:
-                player_position = player1.movePositCourante(0, 1.75)
-            elif niveauFall == 2:
-                player_position = player1.movePositCourante(0, 2)
-            elif niveauFall == 3:
-                player_position = player1.movePositCourante(0, 2.25)
-            elif niveauFall == 4:
-                player_position = player1.movePositCourante(0, 2.50)
-            elif niveauFall == 5:
                 player_position = player1.movePositCourante(0, 2.75)
-            elif niveauFall == 6:
+            elif niveauFall == 2:
                 player_position = player1.movePositCourante(0, 3)
-            elif niveauFall == 7:
+            elif niveauFall == 3:
                 player_position = player1.movePositCourante(0, 3.25)
-            elif niveauFall == 8:
+            elif niveauFall == 4:
                 player_position = player1.movePositCourante(0, 3.50)
+            elif niveauFall == 5:
+                player_position = player1.movePositCourante(0, 3.75)
+            elif niveauFall == 6:
+                player_position = player1.movePositCourante(0, 4)
+            elif niveauFall == 7:
+                player_position = player1.movePositCourante(0, 4.25)
+            elif niveauFall == 8:
+                player_position = player1.movePositCourante(0, 5.50)
             elif niveauFall > 8:
-                player_position = player1.movePositCourante(0, 5)
+                player_position = player1.movePositCourante(0, 6)
 
 
     # recollage du pers
