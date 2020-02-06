@@ -1,43 +1,39 @@
 import pygame
 from pygame.locals import *
 
-# Game Initialization
-pygame.init()
-
-
-# Game Resolution
-screen_width = 1024
-screen_height = 700
-screen = pygame.display.set_mode((screen_width, screen_height))
-
-
-# Text Renderer
-def text_format(message, textFont, textSize, textColor):
-    newFont = pygame.font.Font(textFont, textSize)
-    newText = newFont.render(message, 0, textColor)
-
-    return newText
-
-
-# Colors
-white = (255, 255, 255)
-black = (0, 0, 0)
-gray = (50, 50, 50)
-red = (255, 0, 0)
-green = (0, 255, 0)
-blue = (0, 0, 255)
-yellow = (255, 255, 0)
-
-# Game Fonts
-font = 'freesansbold.ttf'
-
-# Game Framerate
-clock = pygame.time.Clock()
-FPS=30
-
-
 # Main Menu
 def highscore_menu():
+    # Game Initialization
+    pygame.init()
+
+    # Game Resolution
+    screen_width = 1024
+    screen_height = 700
+    screen = pygame.display.set_mode((screen_width, screen_height))
+
+    # Text Renderer
+    def text_format(message, textFont, textSize, textColor):
+        newFont = pygame.font.Font(textFont, textSize)
+        newText = newFont.render(message, 0, textColor)
+
+        return newText
+
+    # Colors
+    white = (255, 255, 255)
+    black = (0, 0, 0)
+    gray = (50, 50, 50)
+    red = (255, 0, 0)
+    green = (0, 255, 0)
+    blue = (0, 0, 255)
+    yellow = (255, 255, 0)
+
+    # Game Fonts
+    font = 'freesansbold.ttf'
+
+    # Game Framerate
+    clock = pygame.time.Clock()
+    FPS = 30
+
     menu = True
     selected = "start"
 
@@ -47,16 +43,7 @@ def highscore_menu():
                 pygame.quit()
                 quit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_DOWN:
-                    import dv
-                if event.key == pygame.K_RETURN:
-                    if selected == "start":
-                        import player_ctrl
-                    if selected == "highscore":
-                        import highscore
-                    if selected == "quit":
-                        pygame.quit()
-                        quit()
+                menu = False
 
         # Main Menu UI
         screen.fill(black)
@@ -92,9 +79,6 @@ def highscore_menu():
         clock.tick(FPS)
         pygame.display.set_caption("Gorgobalt in the Sky")
 
-# Initialize the Game
-highscore_menu()
-pygame.quit()
-quit()
+
 
 
