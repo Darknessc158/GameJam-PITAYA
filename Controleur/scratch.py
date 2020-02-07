@@ -11,7 +11,7 @@ pygame.init()
 file = '../Model/data/Digital Native.mp3'
 pygame.mixer.init()
 pygame.mixer.music.load(file)
-pygame.mixer.music.play()
+pygame.mixer.music.play(-1)
 # Music
 
 # Game Resolution
@@ -104,7 +104,7 @@ def main_menu():
         else:
             text_highscore = text_format("HIGHSCORE", font, 75, (153,153,0))
         if selected == "quit":
-            text_quit = text_format("QUIT", font, 75, (80,80,80))
+            text_quit = text_format("QUIT", font, 75, white)
         else:
             text_quit = text_format("QUIT", font, 75, (153,153,0))
 
