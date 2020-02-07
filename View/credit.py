@@ -22,7 +22,7 @@ name = pygame.font.Font('freesansbold.ttf', 16)
 remi = name.render('CHEN Rémi', True, white)
 aure = name.render('BERNABE Aurélien', True, white)
 naod = name.render('BEKELE Naod', True, white)
-arthur = name.render('PARDIEU Arthur', True, white)
+arthur = name.render('LAGZHOUI Kamal', True, white)
 #Boucle infinie pour garder la fenetre
 launched = True
 while launched:
