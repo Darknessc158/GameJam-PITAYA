@@ -141,7 +141,7 @@ class Game:
         return powerups
 
     def get_diffculty_set(self):
-        file_difficulty = open("../Model/highscore.txt", "r")
+        file_difficulty = open("../Model/difficulty.txt", "r")
         difficulty = int(file_difficulty.readline())
         return difficulty
 
