@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import regles_menu
+import difficultes
 
 # Main Menu
 def options_menu():
@@ -61,8 +62,7 @@ def options_menu():
                     if selected == "regles":
                         regles_menu.regles_menu()
                     if selected == "difficulte":
-                        pygame.quit()
-                        quit()
+                        difficultes.difficulty_menu()
                     if selected == "retour":
                         menu = False
 
