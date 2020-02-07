@@ -146,6 +146,11 @@ def launch() :
             file_highscore = open("../Model/highscore.txt", "a")
             file_highscore.write(str(game1.get_score()) + "\n")
             file_highscore.close()
+            #pygame.mixer.init()
+            #pygame.mixer.music.load('../Model/data/game_over.mp3')
+            #pygame.mixer.music.play(0)
+            effect = pygame.mixer.Sound('../Model/data/gameover.wav')
+            effect.play()
             crash(screen)
             new_game = True
 
@@ -164,6 +169,8 @@ def launch() :
                     haut = False
                     player_position = player1.movePositCourante(0, fallspeed)  # descends à la vitesse des plateformes
                     if plateforme.get_type() == 'teleportation':
+                        effect = pygame.mixer.Sound('../Model/data/telepotation2.wav')
+                        effect.play()
                         player_position = player1.movePositTeleportation()
                 if (min_yplat - 10) <= max_y <= (min_yplat + 10):  # colisation par en haut
                     if plateforme.get_type() == 'poison':
@@ -171,10 +178,14 @@ def launch() :
                         file_highscore = open("../Model/highscore.txt", "a")
                         file_highscore.write(str(game1.get_score()) + "\n")
                         file_highscore.close()
+                        effect = pygame.mixer.Sound('../Model/data/gameover.wav')
+                        effect.play()
                         crash(screen)
                         new_game = True
 
                     elif plateforme.get_type() == 'teleportation':
+                        effect = pygame.mixer.Sound('../Model/data/telepotation2.wav')
+                        effect.play()
                         player_position = player1.movePositTeleportation()
                     elif plateforme.get_type() == 'CarburantMoins':
                         player1.remove_fuel()
@@ -222,6 +233,8 @@ def launch() :
             file_highscore = open("../Model/highscore.txt", "a")
             file_highscore.write(str(game1.get_score()) + "\n")
             file_highscore.close()
+            effect = pygame.mixer.Sound('../Model/data/gameover.wav')
+            effect.play()
             crash(screen)
             new_game = True
         rect = pygame.Rect(740, 677, quantitefuel*2, 25)
@@ -250,9 +263,13 @@ def launch() :
             game1.add_score(1)
         text = pygame.font.Font('freesansbold.ttf', 60)
         text2 = pygame.font.Font('freesansbold.ttf', 15)
-        score = text.render('Score : {}'.format(game1.get_score()), True, (0, 0, 0))
         time_end= T.time()
-        time = text2.render('Temps : {} secondes'.format(int(time_end-time_var)), True, (0, 0, 0))
+        if niveauFall < 6:
+            score = text.render('Score : {}'.format(game1.get_score()), True, (0, 0, 0))
+            time = text2.render('Temps : {} secondes'.format(int(time_end - time_var)), True, (0, 0, 0))
+        else:
+            score = text.render('Score : {}'.format(game1.get_score()), True, (255, 255, 255))
+            time = text2.render('Temps : {} secondes'.format(int(time_end - time_var)), True, (255, 255, 255))
         screen.blit(score, (15, 20))
         screen.blit(time, (20, 70))
 
@@ -353,9 +370,13 @@ def launch() :
                     if min_xobj <= max_x and max_xobj >= min_x: #Sur la longueur de l'objet
                         # L'astronaute est sur l'objet
                         if (objet.get_name() == "carburant"): #Action des powerups
+                            effect = pygame.mixer.Sound('../Model/data/bouteille.wav')
+                            effect.play()
                             player1.add_fuel(objet.get_quantite())
                             quantitefuel = player1.get_fuel()
                         if (objet.get_name() == "bouteille"):
+                            effect = pygame.mixer.Sound('../Model/data/boost2.wav')
+                            effect.play()
                             fallspeed = fallspeed + 4
                             fall = False
                             powerup = True
