@@ -1,26 +1,16 @@
 
 import pygame
-import main
-import player_ctrl
-import  options
 from pygame.locals import *
 
 # Game Initialization
 def difficulty_menu():
+    # Game Initialization
     pygame.init()
-
-    # Music
 
     # Game Resolution
     screen_width = 1024
-    screen_height = 768
+    screen_height = 700
     screen = pygame.display.set_mode((screen_width, screen_height))
-
-    #Background image
-    background = pygame.image.load("../Model/data/background.png").convert()
-    background_rect = background.get_rect()
-    title = pygame.image.load("../Model/data/Gorgobalt-In-The-Sky.png").convert_alpha()
-    title_rect = title.get_rect()
 
     # Text Renderer
     def text_format(message, textFont, textSize, textColor):
@@ -28,7 +18,6 @@ def difficulty_menu():
         newText = newFont.render(message, 0, textColor)
 
         return newText
-
 
     # Colors
     white = (255, 255, 255)
@@ -46,81 +35,107 @@ def difficulty_menu():
     clock = pygame.time.Clock()
     FPS = 30
 
+    menu = True
+    selected = "Facile"
+
+    while menu:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP and selected == "Facile":
+                    selected = "Retour"
+                elif event.key == pygame.K_DOWN and selected == "Facile":
+                    selected = "Intermediaire"
+                elif event.key == pygame.K_UP and selected == "Intermediaire":
+                    selected = "Facile"
+                elif event.key == pygame.K_DOWN and selected == "Intermediaire":
+                    selected = "Pro"
+                elif event.key == pygame.K_UP and selected == "Pro":
+                    selected = "Intermediaire"
+                elif event.key == pygame.K_DOWN and selected == "Pro":
+                    selected = "Impossible"
+                elif event.key == pygame.K_UP and selected == "Impossible":
+                    selected = "Pro"
+                elif event.key == pygame.K_DOWN and selected == "Impossible":
+                    selected = "Retour"
+                elif event.key == pygame.K_UP and selected == "Retour":
+                    selected = "Impossible"
+                elif event.key == pygame.K_DOWN and selected == "Retour":
+                    selected = "Facile"
+                if event.key == pygame.K_RETURN:
+                    if selected == "Facile":
+                        file_difficulty = open("../Model/difficulty.txt", "w").close()
+                        file_difficulty = open("../Model/difficulty.txt", "w")
+                        file_difficulty.write("1")
+                        file_difficulty.close()
+                        menu = False
+                    if  selected == "Intermediaire":
+                        file_difficulty = open("../Model/difficulty.txt", "w").close()
+                        file_difficulty = open("../Model/difficulty.txt", "w")
+                        file_difficulty.write("2")
+                        file_difficulty.close()
+                        menu = False
+                    if  selected == "Pro":
+                        file_difficulty = open("../Model/difficulty.txt", "w").close()
+                        file_difficulty = open("../Model/difficulty.txt", "w")
+                        file_difficulty.write("3")
+                        file_difficulty.close()
+                        menu = False
+                    if  selected == "Impossible":
+                        file_difficulty = open("../Model/difficulty.txt", "w").close()
+                        file_difficulty = open("../Model/difficulty.txt", "w")
+                        file_difficulty.write("5")
+                        file_difficulty.close()
+                        menu = False
+                    if selected == "Retour":
+                        menu = False
 
 
-    # Main Menu
-    def main_menu():
-        menu = True
-        selected = "start"
+        # Main Menu UI
+        screen.fill(black)
+        title = text_format("Difficulte", font, 70, white)
 
-        while menu:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    quit()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_UP and selected == "start":
-                        selected = "quit"
-                    elif event.key == pygame.K_DOWN and selected == "start":
-                        selected = "highscore"
-                    elif event.key == pygame.K_UP and selected == "highscore":
-                        selected = "start"
-                    elif event.key == pygame.K_DOWN and selected == "highscore":
-                        selected = "options"
-                    elif event.key == pygame.K_UP and selected == "options":
-                        selected = "highscore"
-                    elif event.key == pygame.K_DOWN and selected == "options":
-                        selected = "quit"
-                    elif event.key == pygame.K_UP and selected == "quit":
-                        selected = "options"
-                    elif event.key == pygame.K_DOWN and selected == "quit":
-                        selected = "start"
-                    if event.key == pygame.K_RETURN:
-                        if selected == "start":
-                            player_ctrl.launch()
-                        if  selected == "highscore":
-                            main.highscore_menu()
-                        if  selected == "options":
-                            options.options_menu()
-                        if selected == "quit":
-                            pygame.quit()
-                            quit()
+        if selected == "Facile":
+            text_start = text_format("FACILE", font, 75, white)
+        else:
+            text_start = text_format("FACILE", font, 75, (153,153,0))
+        if selected == "Intermediaire":
+            text_options = text_format("AVANCE", font, 75, white)
+        else:
+            text_options = text_format("AVANCE", font, 75, (153,153,0))
+        if selected == "Pro":
+            text_highscore = text_format("PRO", font, 75, white)
+        else:
+            text_highscore = text_format("PRO", font, 75, (153,153,0))
+        if selected == "Impossible":
+            text_quit = text_format("IMPOSSIBLE", font, 75, (255,0,0))
+        else:
+            text_quit = text_format("IMPOSSIBLE", font, 75, (153,153,0))
+        if selected == "Retour":
+            retour = text_format("Retour", font, 60, white)
+        else:
+            retour = text_format("Retour", font, 60, yellow)
 
-            # Main Menu UI
-            screen.fill(black)
-            screen.blit(background, background_rect)
-            if selected == "start":
-                text_start = text_format("START", font, 75, white)
-            else:
-                text_start = text_format("START", font, 75, (153,153,0))
-            if selected == "options":
-                text_options = text_format("OPTIONS", font, 75, white)
-            else:
-                text_options = text_format("OPTIONS", font, 75, (153,153,0))
-            if selected == "highscore":
-                text_highscore = text_format("HIGHSCORE", font, 75, white)
-            else:
-                text_highscore = text_format("HIGHSCORE", font, 75, (153,153,0))
-            if selected == "quit":
-                text_quit = text_format("QUIT", font, 75, (80,80,80))
-            else:
-                text_quit = text_format("QUIT", font, 75, (153,153,0))
+        title_rect = title.get_rect()
+        start_rect = text_start.get_rect()
+        highscore_rect=text_highscore.get_rect()
+        options_rect= text_options.get_rect()
+        quit_rect = text_quit.get_rect()
+        retour_rect = retour.get_rect()
 
-            title_rect = title.get_rect()
-            start_rect = text_start.get_rect()
-            highscore_rect=text_highscore.get_rect()
-            options_rect= text_options.get_rect()
-            quit_rect = text_quit.get_rect()
+        # Main Menu Text
+        screen.blit(title, (screen_width / 2 - (title_rect[2] / 2), 10))
+        screen.blit(text_start, (screen_width / 2 - (start_rect[2] / 2), 150))
+        screen.blit(text_options, (screen_width / 2 - (options_rect[2] / 2), 250))
+        screen.blit(text_highscore, (screen_width / 2 - (highscore_rect[2] / 2), 350))
+        screen.blit(text_quit, (screen_width / 2 - (quit_rect[2] / 2), 450))
+        screen.blit(retour, (screen_width / 2 - (retour_rect[2] / 2), 600))
 
-            # Main Menu Text
-            screen.blit(title, (screen_width / 2 - (title_rect[2] / 2), 10))
-            screen.blit(text_start, (screen_width / 2 - (start_rect[2] / 2), 150))
-            screen.blit(text_highscore, (screen_width / 2 - (highscore_rect[2] / 2), 300))
-            screen.blit(text_options, (screen_width / 2 - (options_rect[2] / 2), 450))
-            screen.blit(text_quit, (screen_width / 2 - (quit_rect[2] / 2), 600))
-            pygame.display.update()
-            clock.tick(FPS)
-            pygame.display.set_caption("Gorgobalt in the Sky")
+        pygame.display.update()
+        clock.tick(FPS)
+        pygame.display.set_caption("Gorgobalt in the Sky")
 
 
 
